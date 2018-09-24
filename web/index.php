@@ -14,12 +14,12 @@
 <?php include("headnav.php");?>
 
     <div id="welcome">
-    	<p> Welcome to the  <span style="color: #044D98">Faculty/Staff Tracker</span></p><br>
+    	<p> Welcome to the  <span style="color: #044D98">Computer Science Faculty/Staff Tracker</span></p><br>
         
         <hr>
         <div id="description">
         <p>We provide an effective tool that will allow  students to be able to easily determine <span style="color: #FDB00E"> when and where 
-		</span>they can meet with the  <span style="color:#FDB00E"> faculty and staff </span> at  North 	Carolina
+		</span>they can meet with the  <span style="color:#FDB00E"> faculty and staff </span> of the Computer Science department at  North 	Carolina 
 		Agricultural and Technical State University. The faculty and staff are able to  <span style="color: #FDB00E"> add, modify, and delete </span> 
 		their available hours and locations to the system.  The students can then view all of the provided  <span style="color: #FDB00E">schedules. </span></p>
         </div><!--End description-->
@@ -52,7 +52,8 @@ include('connect.php');
 				ORDER BY event.Ahoc desc";
 				
 	//All the results of the query is stored in this variable
-	$result = mysql_query($query1);
+	$con = mysqli_connect($hostname, $dbusername, $dbpassword, $databaseName);
+	$result = mysqli_query($con, $query1);	
 				
 	//Have a query to get all the events that are going on now that are adhoc and not adhoc
 	//Check to see if the staff member has an adhoc event going on

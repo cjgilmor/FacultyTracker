@@ -341,11 +341,11 @@ if(!empty($_GET['eventID'])) {
     $eventID = $_GET['eventID'];
     
     // query the database to provide preselected defaults
-    $query = 'SELECT * FROM `event` WHERE `eventID` = '.mysql_real_escape_string($eventID);
-    $qResult = mysql_query($query);
+    $query = 'SELECT * FROM `event` WHERE `eventID` = '.mysqli_real_escape_string($conn, $eventID);
+    $qResult = mysqli_query($conn, $query);
     if($qResult != false)
     {
-        $data = mysql_fetch_array($qResult);
+        $data = mysqli_fetch_array($qResult);
         $eventTitle = $data['Title'];
         
         $eventType = $data['Type'];
@@ -359,9 +359,7 @@ if(!empty($_GET['eventID'])) {
 ?>
   <p>
     <label for="Title">Title:</label>
-      <input name="Title" type="text" <? echo "value=\"{$eventTitle}\""; ?>id="Title" size="30"/>
-
-    
+      <input name="Title" type="text" <?php echo "value=\"{$eventTitle}\""; ?>id="Title" size="30"/>
   </p>
   <p>
     <label for="When">Date:
@@ -423,13 +421,13 @@ if(!empty($_GET['eventID'])) {
     </label>
 <p>
     <label>Location:
-      <input type="text" size="49" name="Location" <? echo "value=\"{$eventLocation}\""; ?> id="Location" />
+      <input type="text" size="49" name="Location" <?php echo "value=$eventLocation"; ?> id="Location" />
     </label>
   </p>
   <p>
     <label>Description: <br />
         <textarea name="Description" cols="55" rows="3" id="Description">
-        <? echo $eventDesc; ?>
+        <?php echo $eventDesc; ?>
         </textarea>
     </label>
   </p>

@@ -306,13 +306,13 @@ function ds_onclick(d, m, y) {
 	//The connection to the database
 	include('connect.php');
 	
-/*	if ($_POST['check'] != 0) {					
+	if ($_POST['check'] != 0) {					
 		if(isset($_POST['check'])) {
 			foreach($_POST['check'] as $eventID) {
 				mysqli_query($conn, "DELETE FROM event WHERE eventID = '$eventID'") or die(mysqli_error($conn));
 			}
 		}		
-	}*/
+	}
 		
 	function dayEvents($startDay)
 	{

@@ -19,9 +19,9 @@
         <p>Here you can add, modify, and delete anything to your schedule <span style="color: #FDB00E"> 
 		</span><br>
    <ul>
-   		<li>	<a href="week.php"> Make Changes to Your Schedule </a> </li>
+   		<li>	<a style="color: #044D98" href="week.php"> Make Changes to Your Schedule </a> </li>
         <?php if($_SESSION['lvl'] == 1){ echo "<li><a href='tools.php'> Administrator Tools </a></li>";} ?>
-        <li>    <a href="logout.php"> Log Out </a> </li>
+        <li>    <a style="color: #044D98" href="logout.php"> Log Out </a> </li>
             
    </ul>
          </p>
