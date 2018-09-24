@@ -8,21 +8,16 @@
 </head>
 
 <?php 
-
 //The connection to the database
-include('connect.php');
-
-
-	$selected_db = mysql_select_db($databaseName, $con);
-	
 function results()
 {
+	include('connect.php');
 	$event = $_GET['eventID'];
 	$qry = "SELECT * FROM event WHERE eventID = '$event'";
 	//All the results of the query is stored in this variable
-	$result = mysql_query($qry);
+	$result = mysqli_query($conn, $qry);
 	//Goes through the results
-	while($row = mysql_fetch_array($result))
+	while($row = mysqli_fetch_array($result))
 	{
 		echo "<table>";
 		echo "<tr><td valign=top align=left><b>Title: </b></td><td>" . $row['Title'] . "</td>";
