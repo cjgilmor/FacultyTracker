@@ -12,33 +12,22 @@ include('connect.php');
 $username = strtolower($_POST['username']);
 $password = strtolower($_POST['password']);
 
-//Attempt to prevent mysql injection
-mysql_real_escape_string($username);
-mysql_real_escape_string($password);
+//Attempt to prevent mysql injection <--- REMEMBER THIS CONCEPT!!!
+mysqli_real_escape_string($conn, $username);
+mysqli_real_escape_string($conn, $password);
 
-//Code to connect to the database
-$con = mysql_connect($hostname, $dbusername, $dbpassword);
-
-if (!$con)
-{
-    die('Unable to connect to MySQL' . mysql_error());
-}
+if (!$conn)
+{ die('Unable to connect to MySQL' . mysqli_error($conn)); }
 else
 {
-
-    //This selects the database
-    $selected_db = mysql_select_db($databaseName, $con);
-
     //Sample Query that get the username from the staffID that matches the username that is inputted
     $query = "SELECT * FROM staff WHERE username='$username'";
 
     //All the results of the query is stored in this variable
-    $result = mysql_query($query);
+    $result = mysqli_query($conn, $query);
 
     //This gets the information from result and puts it into an array
-    $row = mysql_fetch_array($result);
-
-
+    $row = mysqli_fetch_array($result);
 
     //This validates the username and password to make sure it is in the database
 	do{
@@ -48,8 +37,6 @@ else
       if ($username == $row['username'] & ($password == $row['password'] or md5($password) == $row['password']))
         {
             //If login was correct
-		
-			
             //Sets session to true
             $_SESSION['basic_is_logged_in'] = true;
             $_SESSION['staffID'] = $row['staffID'];
@@ -63,19 +50,12 @@ else
             include("Administrator.php");
             ob_flush();
             exit;
-        }
-
-        else
-        {
-
+        } else {
             //Will show 2 links to link back to the home page and login page
             include("menu.php");
             echo "<h4 style='text-align:center'>Wrong username or password </h4>";
-
         }//Ends 2nd if statement
-
     }//Ends 1st if statement
-	
 }
 while(false);
 }
@@ -88,7 +68,7 @@ while(false);
 //}
 
 //Closes the connection
-mysql_close($con);
+mysqli_close($conn);
 ?>
 
 
