@@ -1,0 +1,223 @@
+@charset "utf-8";
+/**********************Welcome, Description, and HR *****************************/
+
+
+ #welcome{
+	float: left;
+	 width: 100%;
+	background-color:#FFFFFF; 	 
+ }
+ hr{
+	 width:80%;
+	 border:dashed;
+	 color: #044D98;
+ }
+
+ #welcome p{
+	 width: 100%;
+  font-size: 30px;
+  color: rgb(157, 161, 165);
+  font-weight: bold;
+  line-height: 1.2;
+	z-index: 8;
+}
+#description p{
+  font-size: 20px;
+  color: rgb(157, 161, 165);
+  font-weight: bold;
+  line-height: 1.2;
+  z-index: 11;
+}
+#description ul{
+	list-style-type:none;
+}
+#description li{
+	font-size: 20px;
+  color: rgb(157, 161, 165);
+  font-weight: bold;
+  line-height: 1.2;
+  z-index: 11;
+	
+}
+
+/*********************At a Glance****************************/
+#at-a-glance label{
+	font-size: 28px;
+  color: #FDB00E;
+  font-weight: bold;
+  line-height: 1.2;
+  text-align: left;
+  text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.35);
+}
+#at-a-glance p{
+	color: #FFF;
+	font-size: 20px;
+}
+
+
+
+#at-a-glance table.weekly {
+	width: 70%;
+	border-width: 1px;
+	border-spacing: 2px;
+	border-style: solid;
+	border-color: #FDB00E;
+	border-collapse: collapse;
+	background-color: #FDB00E;
+}
+#at-a-glance table.weekly th {
+	border-width: 1px;
+	padding: 1px;
+	border-style: dotted;
+	border-color: navy;
+	background-color:#FDB00E;
+	-moz-border-radius: 0px 0px 0px 0px;
+} 
+#at-a-glance tr.days{
+	background-color:#FFFF7A;
+}
+span.clock {font-size:12px; color:#00C;}
+#at-a-glance table.weekly td {
+	border-width: 1px;
+	padding: 1px;
+	border-style: dashed;
+	border-color: #ffff7a;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+#at-a-glance ul{
+	list-style-type: none;	
+}
+#at-a-glancea{
+	font-size: 18px;
+	
+}
+#at-a-glance a:link {
+  	font-size: 28px;
+  color: #FDB00E;
+  font-weight: bold;
+  line-height: 1.2;
+  text-align: left;
+  text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.35);
+}
+
+/* visited link */
+#at-a-glance a:visited {
+    color:#FDB00E;
+}
+
+/* mouse over link */
+#at-a-glance a:hover {
+    color: #FFF;
+}
+
+/**********************About Box*****************************/
+ 
+#About-box {
+	position: relative;
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  height: 350px;
+  width: 300px;
+  /* 280px; */
+  background-color: #FDB00E;
+  margin: auto;
+	 z-index: 12;
+}
+h4{
+  font-size: 48px;
+  color: rgb(0, 70, 132);
+  font-weight: bold;
+  line-height: 1.2;
+  text-align: center;
+  text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.35);
+  z-index: 13;
+}
+#About-box p{
+  font-size: 24px;
+  color: rgb(255, 255, 255);
+  line-height: 1.2;
+  text-align: center;
+  z-index: 17;
+}
+#About-box  #Learn{
+	
+	background:url(images/LearnMore.jpg);
+	color: transparent;
+	width: 230px;
+	height: 50px;
+	
+}
+
+
+/**********************Faculty Box*****************************/
+#Faculty-box{
+	
+	box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  background-color: #FDB00E;
+ 
+  height: 350px;
+  width: 300px;
+  margin: auto;
+	z-index: 12;
+}
+
+
+ #Faculty-box p{
+	 font-size: 24px;
+  color: rgb(255, 255, 255);
+  line-height: 1.2;
+  text-align: center;
+  z-index: 17; 
+ }
+ 
+ #Login{
+	 position: relative;
+	 bottom: 3;
+
+	 background:url(images/LoginHere.jpg) no-repeat;
+	color: transparent;
+	width: 230px;
+	height: 50px;
+	 
+	 
+ }
+ 
+ 
+ /**********************Students Box *****************************/
+ #Students-box{
+	 box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  background-color: #FDB00E;
+  height: 350px;
+  width: 300px;
+  margin: auto;
+	 z-index: 12; 
+ }
+  #Students-box p{
+	 font-size: 24px;
+  color: rgb(255, 255, 255);
+  line-height: 1.2;
+  text-align: center;
+  z-index: 17;   
+	  
+  }
+  #Students{
+	  background:url(images/ViewSchedules.jpg);
+	color: transparent;
+	width: 230px;
+	height: 50px;
+	  
+	  
+  }
+  
+  #info-boxes table{
+	  text-align: center;
+	 
+	 width: 80%;
+	 border:none;
+	 border-color: transparent;
+  }
+  #info-boxes table th{
+	 padding : 10px 50px 10px 10px;
+  }
+  
+ 

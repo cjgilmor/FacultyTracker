@@ -1,0 +1,32 @@
+@charset "utf-8";
+#content{
+	float: left;
+	background: #FFF;
+}
+h3{
+	font-size: 30px;
+  color: rgb(157, 161, 165);
+  font-weight: bold;
+  line-height: 1.2;
+	z-index: 8;
+	
+}
+p{
+color: #044D98;
+  font-weight: bold;
+  line-height: 1.2;
+  z-index: 11;	
+	
+}
+#content ul{
+	list-style-type: none;
+	
+}
+#content ol{
+	color: #044D98;
+  font-weight: bold;
+  line-height: 1.2;
+  z-index: 11;
+  text-align:left;
+	
+}

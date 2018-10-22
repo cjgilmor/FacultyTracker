@@ -1,0 +1,42 @@
+#content{
+	width: 100%;
+}
+
+div.week {
+	position: relative;
+	/*padding-right: 7%;*/
+}
+table.weekly {
+	border-width: 1px;
+	border-spacing: 2px;
+	border-style: solid;
+	border-color: rgba(253, 185, 39, 0.98);
+	border-collapse: collapse;
+	background-color: rgba(253, 185, 39, 0.98);
+}
+table.weekly th {
+	border-width: 1px;
+	padding: 1px;
+	border-style: dotted;
+	border-color: navy;
+	background-color:rgba(253, 185, 39, 0.98);
+	-moz-border-radius: 0px 0px 0px 0px;
+} 
+tr.days{
+	background-color:#FFFF7A;
+}
+table.weekly td {
+	border-width: 1px;
+	padding: 1px;
+	border-style: dashed;
+	border-color: rgba(253, 185, 39, 0.98);
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+h2,h3{
+	color: #FFF;
+}
+p{
+color: #FFF;	
+	
+}

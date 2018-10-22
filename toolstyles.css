@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+table div{
+	color: #FFF;
+}
+
+#links{
+	text-align: right;
+	
+}
+#links li{
+	display: inline-block;	
+}
+#links li a{
+	color: #FFF;
+	font-size: 16px;
+}

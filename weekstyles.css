@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+/********************Table****************************/
+table.weekly {
+	border-width: 1px;
+	border-spacing: 2px;
+	border-style: solid;
+	border-color: #FDB00E;
+	border-collapse: collapse;
+	background-color: rgb(213, 230, 242);
+}
+table.weekly th {
+	border-width: 1px;
+	padding: 1px;
+	border-style: dotted;
+	border-color: navy;
+	background-color: #FDB00E;
+	-moz-border-radius: 0px 0px 0px 0px;
+} 
+tr.days{
+	background-color:#FFFF7A;
+}
+table.weekly td {
+	border-width: 1px;
+	padding: 1px;
+	border-style: dashed;
+	border-color: #FDB00E;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+h2{
+	color: #FFF;
+}
+p{
+	color: #FFF;
+	font-size: 14px;
+	
+	
+}
+#log{
+	float: right;
+	color: #FFF;
+	margin-right: 50px;
+	
+}
+#clock{
+	color: #FFF;
+	
+}
+#links{
+	text-align: right;
+	
+}
+#links li{
+	display: inline-block;	
+}
+#links li a{
+	color: #FFF;
+	font-size: 16px;
+}
+label{
+	color: #FFF;
+}
