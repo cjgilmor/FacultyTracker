@@ -3,69 +3,84 @@
 	$name;
 	$uid;
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="refresh" content="300" />
-
 <link href="calstyles.css" rel="stylesheet" type="text/css" />
 <?php
-if(isset($_POST["dbox"]))
+if(isset($_POST["staff-list"]))
 {
-	$user = mysqli_real_escape_string($conn, $_POST["dbox"]);
+	$user = mysqli_real_escape_string($conn, $_POST["staff-list"]);
 	$sql = "Select * FROM staff where staffID=".$user;
 	$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 	$row = mysqli_fetch_array($result);
 
 	$staffID = mysqli_real_escape_string($conn, $row['staffID']);
-	$name = mysqli_real_escape_string($conn, $row['name']);
-	
 		
 	//Gets the Id for the staff member
 	$uid = $staffID;
-	$name = $name;
+	//Sets Selected staff name
+	$name = mysqli_real_escape_string($conn, $row['fName'])." ".mysqli_real_escape_string($conn, $row['lName']);
 }
 ?>
 <title>Weekly Schedule <?php if(isset($name))echo "| " . $name; ?></title>
+<script>
+function getData(type,str) {
+    if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+		if (type==0) document.getElementById("dept-list").innerHTML = "<option value=\"\" selected >- SELECT DEPTARTMENT -</option>"; 
+		document.getElementById("staff-list").innerHTML = "<option value=\"\" selected >- SELECT STAFF MEMBER -</option>";
+		return;
+	} else {
+		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // <- code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {// <- No idea. Just go with it.
+				if (type==0) document.getElementById("dept-list").innerHTML = this.responseText;
+				else document.getElementById("staff-list").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET","getData.php?t="+type+"&in="+str,true);
+        xmlhttp.send();
+    }
+}
+function go(str) {//!!!TEMP!!!
+	if (str == "") return; //DOES NOTHING WHEN NO ENTRY IS SELECTED
+	else document.getElementById("outtest").innerHTML = "OUTPUT SELECTION: \""+str+"\"";
+}//!!!TEMP!!!
+</script>
 </head>
 
 <body>
-
 <div class="wrapper" align= "center">
- <?php include("headnav.php") ?>;
-    
-    <div id="space">
-    <p>
-    
-    
-     </p>
-    </div>
+<?php include("headnav.php") ?>
 <div id="white">
+&nbsp;
 <form name="frmLoadUser" method="post" action="">
-  <h3>&nbsp;</h3>
-  <h3>&nbsp;</h3>
-  
-  <h3>Select Faculty:
-    <select name="dbox" onchange="this.form.submit()">
-      <option value="0">Select</option>
-      <?php 
-		$q1 = "SELECT * FROM staff";
-		$result = mysqli_query($conn, $q1) or die(mysqli_error($conn));				
-		while($row = mysqli_fetch_array($result))
-		{ echo "<option value=" . $row['staffID'] . ">" . $row['name'] . " </option>"; }
-
-	  ?>
-    </select>
-  </h3>
+  <table>
+		<td>
+			<tr>
+				<select id="coll-list" onchange="getData(0,this.value)">
+					<option value="" selected >- SELECT COLLEGE -</option>
+					<?php
+						$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
+						while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
+					?>
+				</select>
+			</tr><tr>
+				<select id="dept-list" onchange="getData(1,this.value)"><option value="" selected >- SELECT DEPTARTMENT -</option></select>
+			</tr><tr><!-- name="staff-list" is needed for POST functionality -->
+				<select name="staff-list" id="staff-list" onchange="this.form.submit()"><option value="" selected >- SELECT STAFF MEMBER -</option></select>
+			</tr>
+		</td>
+	</table>
 </form>
- 
-
-
-
+<p id="outtest"></p>
 <?php
-
 	//Function that puts the days of the week into the schedule
 	function dayEvents($startDay, $uid)
 	{
@@ -88,10 +103,10 @@ if(isset($_POST["dbox"]))
 		// Gets YYYY-mm-dd format of $day
 		$newdate = date('Y-m-d', $ts);
 		
-		$q2 = "SELECT event.Title, event.Start, event.End, event.eventID 
-				FROM event
-				WHERE event.Date = '$newdate' AND event.staffID = '$uid'
-				ORDER BY event.Start";
+		$q2 = "SELECT * 
+				FROM events
+				WHERE eventDate = '$newdate' AND staffID = '$uid'
+				ORDER BY startTime";
 				
 		//All the results of the query is stored in this variable
 		$result = mysqli_query($conn, $q2) or die(mysqli_error($conn));	
@@ -99,9 +114,9 @@ if(isset($_POST["dbox"]))
 		while($row = mysqli_fetch_array($result))
 		{
 			$eventID = mysqli_real_escape_string($conn, $row['eventID']);
-			$title = mysqli_real_escape_string($conn, $row['Title']);
-			$start = mysqli_real_escape_string($conn, $row['Start']);
-			$end = mysqli_real_escape_string($conn, $row['End']);
+			$title = mysqli_real_escape_string($conn, $row['name']);
+			$start = mysqli_real_escape_string($conn, $row['startTime']);
+			$end = mysqli_real_escape_string($conn, $row['endTime']);
 			
 			
 			echo "<tr valign=top>";
@@ -114,9 +129,8 @@ if(isset($_POST["dbox"]))
 		}
 	}
 ?>
-
-<h2>
-    <p>Weekly Schedule <?php if(isset($name))echo "for: ". $name; ?></p></h2>
+<h3>
+    <p>Weekly Schedule <?php if(isset($name))echo "for: ". $name; ?></p></h3>
   </div>
     <div align="center" class="week">
     <p> NOTICE! If you do not see a scheduled event, assume faculty member is not available.  </p>

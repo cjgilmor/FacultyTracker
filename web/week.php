@@ -305,14 +305,12 @@ function ds_onclick(d, m, y) {
 <?php
 	//The connection to the database
 	include('connect.php');
-	
-/*	if ($_POST['check'] != 0) {					
+					
 		if(isset($_POST['check'])) {
 			foreach($_POST['check'] as $eventID) {
-				mysqli_query($conn, "DELETE FROM event WHERE eventID = '$eventID'") or die(mysqli_error($conn));
+				mysqli_query($conn, "DELETE FROM events WHERE eventID = '$eventID'") or die(mysqli_error($conn));
 			}
 		}		
-	}*/
 		
 	function dayEvents($startDay)
 	{
@@ -338,10 +336,10 @@ function ds_onclick(d, m, y) {
 	
 		// Gets YYYY-mm-dd format of $day
 		$newdate = date('Y-m-d', $ts);
-		$query2 = "SELECT event.Title, event.Start, event.End, event.eventID 
-				FROM event
-				WHERE event.Date = '$newdate' AND event.staffID = '$_SESSION[staffID]'
-				ORDER BY event.Start";
+		$query2 = "SELECT *
+					FROM events
+					WHERE eventDate = '$newdate' AND staffID = '$_SESSION[staffID]'
+					ORDER BY startTime";
 				
 		//All the results of the query is stored in this variable
 		$result = mysqli_query($conn, $query2);
@@ -357,7 +355,7 @@ function ds_onclick(d, m, y) {
 			$url = "descript.php";
 			$url = $url . "?eventID=" . $row['eventID'];
 			$url = "window.open('".$url."','','width=310,height=355,0,status=0,scrollbars=1,left=500,top=20')";
-			echo "<td><b><a href='javascript:void();' onClick=".$url.">" . $row['Title'] . "</a></b><br/><small>". date("g:i a", strtotime($row['Start'])) . "-" . date("g:i a", strtotime($row['End'])) . "</small></td>";			
+			echo "<td><b><a href='javascript:void();' onClick=".$url.">" . $row['name'] . "</a></b><br/><small>". date("g:i a", strtotime($row['startTime'])) . "-" . date("g:i a", strtotime($row['endTime'])) . "</small></td>";			
 			echo "<td><a href='javascript:void();' onClick=".$aurl.">Edit</a>";
 			echo "</tr>";
 		}

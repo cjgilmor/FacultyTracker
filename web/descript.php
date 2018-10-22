@@ -13,20 +13,20 @@ function results()
 {
 	include('connect.php');
 	$event = $_GET['eventID'];
-	$qry = "SELECT * FROM event WHERE eventID = '$event'";
+	$qry = "SELECT * FROM events WHERE eventID = '$event'";
 	//All the results of the query is stored in this variable
 	$result = mysqli_query($conn, $qry);
 	//Goes through the results
 	while($row = mysqli_fetch_array($result))
 	{
 		echo "<table>";
-		echo "<tr><td valign=top align=left><b>Title: </b></td><td>" . $row['Title'] . "</td>";
-		echo "<tr><td align=left><b>Date: </b></td><td>" . $row['Date'] . "</td>";
-		echo "<tr><td align=left><b>Time: </b></td><td>" . $row['Start'] . " - " . $row['End'] . "</td>";
+		echo "<tr><td valign=top align=left><b>Title: </b></td><td>" . $row['name'] . "</td>";
+		echo "<tr><td align=left><b>Date: </b></td><td>" . $row['eventDate'] . "</td>";
+		echo "<tr><td align=left><b>Time: </b></td><td>" . $row['startTime'] . " - " . $row['endTime'] . "</td>";
 		//echo "<br/><br/>";
-		echo "<tr><td align=left><b>Location: </b></td><td>" . $row['Location'] . "</td>";
+		echo "<tr><td align=left><b>Location: </b></td><td>" . $row['place'] . "</td>";
 		//echo "<br><br>";
-		echo "<tr><td valign=top align=left><b>Description: </b></td><td>" . $row['Description'] . "</td>";
+		echo "<tr><td valign=top align=left><b>Description: </b></td><td>" . $row['description'] . "</td>";
 		echo "</table>";
 	}
 }

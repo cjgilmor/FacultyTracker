@@ -2,25 +2,12 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Faculty Login</title>
+<title>Faculty Tracker - Login</title>
 <link href="loginstyles.css" rel="stylesheet" type="text/css">
 </head>
 
-<body>
-<div class="wrapper" align= "center">
-	<div id="header">
-    	<h1> Faculty Tracker </h1>
-    </div> <!--End header-->
-	<div id="nav">
-    	<ul>
-        	<li><a href="index.php">Home</a></li>
-            <li><a href="About.php">About</a></li>
-            <li><a href="FacultyLogin.html">Faculty Login</a></li>
-            <li><a href="StudentWeekly.php"> View Schedules</a></li>
-            <li><a href="Help.php">Help</a></li>
-            </ul>
-    </div> <!--End navigation-->    
-    
+<body>  
+<?php include("headnav.php") ?>   
     <div id="content">
     <div id="box">
       <h3> Login </h3>
@@ -41,18 +28,6 @@
     	</div> <!--End inner box -->
     	</div> <!--End box-->
     </div> <!--End main content-->
-	<div id="footer">
-    	<labeL> Brought to you by RTG Spring 2015 and Half n Half Spring 2010</labeL>
-    </div> <!--End footer-->
-
-
-
-
-
-</div> <!--End wrappper class-->
-
-
-
-
+<?php include("footer.php") ?>
 </body>
 </html>

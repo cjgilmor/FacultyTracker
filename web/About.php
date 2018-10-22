@@ -18,12 +18,12 @@
         <h3>
         <span style="color: #FDB00E">	Purpose </span>
         </h3>
-        <p>North Carolina Agricultural and Technical State University Faculty need to a way to dynamically update a digital schedule indicating times of availability. Students need a way to obtain knowledge regarding the availability of their professors so that they may utilize their time more effectively. Our faculty tracker application provides efficiency for this process. Our application builds upon the first version of the Faculty Tracker that was implemented by the group Half n Half from the Spring 2010 senior project class.  <span style="color: #FDB00E"></span></p>
+        <p>Computer Science Faculty needs to a way to dynamically update a digital schedule indicating times of availability. Students need a way to obtain knowledge regarding the availability of their professors so that they may utilize their time more effectively. Our faculty tracker application provides efficiency for this process. Our application builds upon the first version of the Faculty Tracker that was implemented by the group Half n Half from the Spring 2010 senior project class.  <span style="color: #FDB00E"></span></p>
         <h3>
    			<span style="color: #FDB00E"> Objective </span>
         </h3>
         <p>
-        The objective of this project is for North Carolina Agricultural and Technical State University students to have the ability to view the schedules of their professors in order to know what their available meeting times are. Students will be able to view and faculty will be able to update information on the tracker via web and/or phone application.
+        The objective of this project is for Computer Science students to have the ability to view the schedules of their professors in order to know what their available meeting times are. Students will be able to view and faculty will be able to update information on the tracker via web and/or phone application. 
         </p>
         <h3>
         <span style="color: #FDB00E">Members </span>
@@ -35,15 +35,6 @@
         </li>
         <li>Half n Half : Creators of the first version of Faculty Tracker 
         </li>
-        </ul>
-            <ul>
-            <li> Pete Shull : Data Cleaner (MySQL) </li>
-            <li> Diombre Jeannette : Android Developer </li>
-            <li> Ahmed Gafar : Android Developer </li>
-            <li> Cameron Gilmore   : Web Developer
-            </li>
-            <li>Code4MePlease : Creators of the second version of Faculty Tracker
-            </li>
         </ul>
         </div><!--End description-->
         </div> <!--End welcome statement-->

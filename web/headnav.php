@@ -7,17 +7,16 @@
 </head>
 
 <body>
-<div id="header">
-	  <h1> Faculty Tracker </h1>
+<div id="header" align="center">
+	  <h2> Faculty Tracker </h2>
 	</div> <!--End header-->
 	<div id="nav">
     
     	<ul>
-        	<li><a href="index.php">Home</a></li>
-            <li><a href="About.php">About</a></li>
-            <li><a href="FacultyLogin.html">Faculty Login</a></li>
-            <li><a href="StudentWeekly.php"> View Schedules</a></li>
-            <li><a href="Help.php"> Help </a> </li>
+            <li><a href="FacultyLogin.php">Login</a></li>
+			<li><a href="index.php">What's Happening Now</a></li>
+            <li><a href="StudentWeekly.php">Schedules</a></li>
+            <li><a href="Help.php">More...</a> </li>
             </ul>
             
     </div> <!--End navigation-->

@@ -21,7 +21,7 @@ if (!$conn)
 else
 {
     //Sample Query that get the username from the staffID that matches the username that is inputted
-    $query = "SELECT * FROM staff WHERE username='$username'";
+    $query = "SELECT * FROM staff WHERE un='$username'";
 
     //All the results of the query is stored in this variable
     $result = mysqli_query($conn, $query);
@@ -34,14 +34,14 @@ else
    if (isset($username) && isset($password))
     {
 	
-      if ($username == $row['username'] & ($password == $row['password'] or md5($password) == $row['password']))
+      if ($username == $row['un'] & ($password == $row['pw'] or md5($password) == $row['pw']))
         {
             //If login was correct
             //Sets session to true
             $_SESSION['basic_is_logged_in'] = true;
             $_SESSION['staffID'] = $row['staffID'];
-            $_SESSION['name'] = $row['name'];
-            $_SESSION['lvl'] = $row['level'];
+            $_SESSION['name'] = $row['fName']." ".$row['lName'];;
+            //$_SESSION['lvl'] = $row['titleID'];
 
             $loginName = $_SESSION['name'];
 
