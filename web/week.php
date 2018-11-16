@@ -337,9 +337,9 @@ function ds_onclick(d, m, y) {
 		// Gets YYYY-mm-dd format of $day
 		$newdate = date('Y-m-d', $ts);
 		$query2 = "SELECT *
-					FROM events
-					WHERE eventDate = '$newdate' AND staffID = '$_SESSION[staffID]'
-					ORDER BY startTime";
+				FROM events
+				WHERE events.eventDate = '$newdate' AND events.staffID = '$_SESSION[staffID]'
+				ORDER BY events.startTime";
 				
 		//All the results of the query is stored in this variable
 		$result = mysqli_query($conn, $query2);
@@ -355,7 +355,7 @@ function ds_onclick(d, m, y) {
 			$url = "descript.php";
 			$url = $url . "?eventID=" . $row['eventID'];
 			$url = "window.open('".$url."','','width=310,height=355,0,status=0,scrollbars=1,left=500,top=20')";
-			echo "<td><b><a href='javascript:void();' onClick=".$url.">" . $row['name'] . "</a></b><br/><small>". date("g:i a", strtotime($row['startTime'])) . "-" . date("g:i a", strtotime($row['endTime'])) . "</small></td>";			
+			echo "<td><b><a href='javascript:void();' onClick=".$url.">" . $row['eventName'] . "</a></b><br/><small>". date("g:i a", strtotime($row['startTime'])) . "-" . date("g:i a", strtotime($row['endTime'])) . "</small></td>";			
 			echo "<td><a href='javascript:void();' onClick=".$aurl.">Edit</a>";
 			echo "</tr>";
 		}
@@ -381,16 +381,16 @@ function ds_onclick(d, m, y) {
     </div>
     <hr/>
     <center>
-    <table class="weekly" width="800" height="344" border="2" cellpadding="1">
+    <table class="weekly" width="900" height="344" border="2" cellpadding="1">
       <tr>
         <th height="25" colspan="5" bgcolor="gold"><center><font color="navy"> Agenda </center></th>
       </tr>
       <tr class="days" align="center">
-        <td height="27" width="160" bgcolor="gold"><b><font color="navy"> Monday</td>
-        <td width="160" bgcolor="gold"><b><font color="navy">Tuesday</td>
-        <td width="160" bgcolor="gold"><b><font color="navy">Wednesday</td>
-        <td width="160" bgcolor="gold"><b><font color="navy">Thursday</td>
-        <td width="160" bgcolor="gold"><b><font color="navy">Friday</td>
+        <td height="27" width="180" bgcolor="gold"><b><font color="navy"> Monday</td>
+        <td width="180" bgcolor="gold"><b><font color="navy">Tuesday</td>
+        <td width="180" bgcolor="gold"><b><font color="navy">Wednesday</td>
+        <td width="180" bgcolor="gold"><b><font color="navy">Thursday</td>
+        <td width="180" bgcolor="gold"><b><font color="navy">Friday</td>
       </tr>
       <tr align="center">
 	  
@@ -436,11 +436,11 @@ function ds_onclick(d, m, y) {
 	<form name="modify" method="post" action="week.php">
       <tr valign="top">
         <td height="250">
-        <table class="eventSel" width="155"><?php dayEvents("1");?></table></td>
-	    <td><table class="eventSel" width="158"><?php dayEvents("2");?></table></td>
-        <td><table class="eventSel" width="158"><?php dayEvents("3");?></table></td>
-        <td><table class="eventSel" width="158"><?php dayEvents("4");?></table></td>
-        <td><table class="eventSel" width="158"><?php dayEvents("5");?></table></td>
+        <table class="eventSel" width="177"><?php dayEvents("1");?></table></td>
+	    <td><table class="eventSel" width="177"><?php dayEvents("2");?></table></td>
+        <td><table class="eventSel" width="177"><?php dayEvents("3");?></table></td>
+        <td><table class="eventSel" width="177"><?php dayEvents("4");?></table></td>
+        <td><table class="eventSel" width="177"><?php dayEvents("5");?></table></td>
       </tr>
       <tr>
       <td height="27" colspan="5" valign="middle">
