@@ -29,10 +29,25 @@ function getData(type,str) {
         xmlhttp.send();
     }
 }
-function go(str) {//!!!TEMP!!!
-	if (str == "") return; //DOES NOTHING WHEN NO ENTRY IS SELECTED
-	else document.getElementById("outtest").innerHTML = "OUTPUT SELECTION: \""+str+"\"";
-}//!!!TEMP!!!
+function getGlance(str) {
+    if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+		document.getElementById("event-table-data").innerHTML = "<tr><th> Faculty Name </th> <th> Current Location </th> <th> Until</th> </tr>"; 
+		return;
+	} else {
+		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // <- code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {// <- No idea. Just go with it.
+				document.getElementById("event-table-data").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET","getGlance.php?in="+str,true);
+        xmlhttp.send();
+    }
+}
 </script>
 <body>
 <div class="wrapper" align= "center">
@@ -50,66 +65,18 @@ function go(str) {//!!!TEMP!!!
 					?>
 				</select>
 			</tr><tr>
-				<select id="dept-list" onchange="getData(1,this.value)"><option value="" selected >- SELECT DEPTARTMENT -</option></select>
+				<select id="dept-list" onchange="getGlance(this.value)"><option value="" selected >- SELECT DEPTARTMENT -</option></select>
 			</tr>
 		</td>
 	</table>
-</form>	
-
-    
+</form>	 
     <div id="content">
           <div id="at-a-glance">
          <label> At A Glance </label>
-          
-          <?php
-
-include('connect.php');
-
-	//Creates the table to display our results of the query
-	echo "<table class='weekly' width=600 border=2><tr><th> Faculty Name </th> <th> Current Location </th> <th> Until</th> </tr>";
 	
-	//Sets Current Time
-	$current = time();
-	$here = getdate();
+		<span id="event-table-data"></span>
 	
-	//The querty to get the staff names, events, locations, start and end times from the database
-	//to check if the events are taking place right now
-	$query1 = "SELECT *
-				FROM staff, events
-				WHERE CURDATE() = events.eventDate
-				AND CURTIME() BETWEEN events.startTime AND events.endTime
-				AND staff.staffID = events.staffID;";
-//				ORDER BY event.Ahoc desc";
-				
-	//All the results of the query is stored in this variable
-	$result = mysqli_query($conn, $query1);	
-				
-	//Have a query to get all the events that are going on now that are adhoc and not adhoc
-	//Check to see if the staff member has an adhoc event going on
-	//If he does then print out that result
-	//If he doesnt then print out the regular event
-		
-	$oldStaffID = 0;
-	
-	//Goes through the results	
-	while($row = mysqli_fetch_array($result))
-	{										
-			echo "<tr>";
-			//This puts the results in the table
-			echo "<td align='center'>" . $row['lName'].", ".$row['fName'] . "</td>";
-/*			if($row['Ahoc'] == 1) {
-				echo "<td align='center'>" . "<b>[Override] </b>". $row['eventName'] . " (". $row['place'] . ")" . "</td>";
-				echo "<td align='center'>" . "<b>[Override] </b>".  date("g:i a", strtotime($row['endTime'])). " </td>";
-			} else	*/
-			{
-				echo "<td align='center'>" . $row['name'] . " ( ". $row['place'] . " ) " . "</td>";
-				echo "<td align='center'>" .  date("g:i a", strtotime($row['endTime'])) . " </td>";
-			}
-			echo "</tr>";	
-	}
-	//Closes off the table
-	echo "</table>";
-?>      
+         
 		<p> NOTICE! Assume faculty member is not available if you do not see them listed </p>
       </div> <!--End at a glance-->
     </div> <!--End main content-->

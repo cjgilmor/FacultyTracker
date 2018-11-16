@@ -48,10 +48,39 @@ function getData(type,str) {
         xmlhttp.send();
     }
 }
-function go(str) {//!!!TEMP!!!
-	if (str == "") return; //DOES NOTHING WHEN NO ENTRY IS SELECTED
-	else document.getElementById("outtest").innerHTML = "OUTPUT SELECTION: \""+str+"\"";
-}//!!!TEMP!!!
+function getE(uid) {
+	if (uid=="") { getEvents("",uid); } 
+	else {
+		getEvents(1,uid);
+		getEvents(2,uid);
+		getEvents(3,uid);
+		getEvents(4,uid);
+		getEvents(5,uid);
+	}
+}
+function getEvents(str, uid) {
+    if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+		document.getElementById("s1").innerHTML = "";
+		document.getElementById("s2").innerHTML = ""; 
+		document.getElementById("s3").innerHTML = ""; 
+		document.getElementById("s4").innerHTML = ""; 
+		document.getElementById("s5").innerHTML = ""; 
+		return;
+	} else {
+		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // <- code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {// <- No idea. Just go with it.
+				document.getElementById("s"+str).innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET","getEvents.php?in="+str+"&id="+uid,true);
+        xmlhttp.send();
+    }
+}
 </script>
 </head>
 
@@ -74,7 +103,7 @@ function go(str) {//!!!TEMP!!!
 			</tr><tr>
 				<select id="dept-list" onchange="getData(1,this.value)"><option value="" selected >- SELECT DEPTARTMENT -</option></select>
 			</tr><tr><!-- name="staff-list" is needed for POST functionality -->
-				<select name="staff-list" id="staff-list" onchange="this.form.submit()"><option value="" selected >- SELECT STAFF MEMBER -</option></select>
+				<select name="staff-list" id="staff-list" onchange="getE(this.value)"><option value="" selected >- SELECT STAFF MEMBER -</option></select>
 			</tr>
 		</td>
 	</table>
@@ -114,7 +143,7 @@ function go(str) {//!!!TEMP!!!
 		while($row = mysqli_fetch_array($result))
 		{
 			$eventID = mysqli_real_escape_string($conn, $row['eventID']);
-			$title = mysqli_real_escape_string($conn, $row['name']);
+			$title = mysqli_real_escape_string($conn, $row['eventName']);
 			$start = mysqli_real_escape_string($conn, $row['startTime']);
 			$end = mysqli_real_escape_string($conn, $row['endTime']);
 			
@@ -171,12 +200,11 @@ function go(str) {//!!!TEMP!!!
 	  ?>
       </tr>
       <tr valign="top">
-        <td height="250">
-        <table class="eventSel" width="155"><?php if(isset($uid))dayEvents("1",$uid);?></table></td>
-	    <td><table class="eventSel" width="155"><?php if(isset($uid))dayEvents("2",$uid);?></table></td>
-        <td><table class="eventSel" width="155"><?php if(isset($uid))dayEvents("3",$uid);?></table></td>
-        <td><table class="eventSel" width="155"><?php if(isset($uid))dayEvents("4",$uid);?></table></td>
-        <td valign="top"><table class="eventSel" width="155"><?php if(isset($uid))dayEvents("5",$uid);?></table></td>
+        <td height="250"><span id="s1"></span></td>
+	    <td><span id="s2"></span></td>
+        <td><span id="s3"></span></td>
+        <td><span id="s4"></span></td>
+        <td valign="top"><span id="s5"></span></td>
       </tr>
     </table>
    

@@ -34,14 +34,14 @@ else
    if (isset($username) && isset($password))
     {
 	
-      if ($username == $row['un'] & ($password == $row['pw'] or md5($password) == $row['pw']))
+      if ($username != "" && $password != "" && $username == $row['un'] & ($password == $row['pw'] or md5($password) == $row['pw']))
         {
             //If login was correct
             //Sets session to true
             $_SESSION['basic_is_logged_in'] = true;
             $_SESSION['staffID'] = $row['staffID'];
-            $_SESSION['name'] = $row['fName']." ".$row['lName'];;
-            //$_SESSION['lvl'] = $row['titleID'];
+            $_SESSION['name'] = $row['fName']." ".$row['lName'];
+            $_SESSION['lvl'] = $row['titleID'];
 
             $loginName = $_SESSION['name'];
 
@@ -70,8 +70,3 @@ while(false);
 //Closes the connection
 mysqli_close($conn);
 ?>
-
-
-
-
-

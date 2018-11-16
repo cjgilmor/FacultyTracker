@@ -11,7 +11,7 @@
 	<?php include("headnav.php");?>
 <div id="description">
 
-<p> <a href="FacultyLogin.html"> Go back to Login</a> or <a href="index.php"> Go to Home Page </a> </p>
+<p> <a href="FacultyLogin.php"> Go back to Login</a> or <a href="index.php"> Go to Home Page </a> </p>
 
 
 </div>

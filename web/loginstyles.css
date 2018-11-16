@@ -103,7 +103,7 @@ vertical-align:middle;
 	z-index: 3;
 }
 #submit{
-	position:absolute;
+
 	bottom: 5%;
 	left: 30%;
 }
@@ -116,24 +116,25 @@ vertical-align:middle;
 	width: 300px;	
 }
 
-
+/*
 .user{
 	position:absolute;
 	top: 35%;
 	left:12%;
-	height: 50px;
-	width: 600px;
-	font-size: 16px;
+	height: 30px;
+	width: 300px;
+	font-size: 14px;
 	
 }
 .pass{
 	position:absolute;
 	top: 55%;
 	left:12%;
-	height: 50px;
-	width: 600px;
-	font-size: 16px;
-}
+	height: 30px;
+	width: 300px;
+	font-size: 14px;
+}*/
+
  /**********************Footer *****************************/
  #footer{
   font-size: 20px;;

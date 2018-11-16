@@ -20,13 +20,13 @@ function results()
 	while($row = mysqli_fetch_array($result))
 	{
 		echo "<table>";
-		echo "<tr><td valign=top align=left><b>Title: </b></td><td>" . $row['name'] . "</td>";
+		echo "<tr><td valign=top align=left><b>Title: </b></td><td>" . $row['eventName'] . "</td>";
 		echo "<tr><td align=left><b>Date: </b></td><td>" . $row['eventDate'] . "</td>";
 		echo "<tr><td align=left><b>Time: </b></td><td>" . $row['startTime'] . " - " . $row['endTime'] . "</td>";
 		//echo "<br/><br/>";
-		echo "<tr><td align=left><b>Location: </b></td><td>" . $row['place'] . "</td>";
+		echo "<tr><td align=left><b>Location: </b></td><td>" . $row['eventPlace'] . "</td>";
 		//echo "<br><br>";
-		echo "<tr><td valign=top align=left><b>Description: </b></td><td>" . $row['description'] . "</td>";
+		echo "<tr><td valign=top align=left><b>Description: </b></td><td>" . $row['eventDesc'] . "</td>";
 		echo "</table>";
 	}
 }

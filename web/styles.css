@@ -219,5 +219,31 @@ h4{
   #info-boxes table th{
 	 padding : 10px 50px 10px 10px;
   }
-  
- 
+   /**********************Login Box *****************************/
+   
+.log_user{
+/*	position:absolute; */
+	top: 100px;
+	left:12%;
+	height: 30px;
+	width: 300px;
+	font-size: 14px;
+}
+
+.log_pass{
+/*	position:absolute; */
+	top: 55%;
+	left:12%;
+	height: 30px;
+	width: 300px;
+	font-size: 14px;
+}
+   
+   .log_submit{
+	
+	background:url(images/Submit.gif);
+	cursor:pointer;
+	color: transparent;
+	height:76px;
+	width: 300px;	
+}
