@@ -28,7 +28,7 @@
 		}
 	}
 	</script>
-	<title>Add Event - alpha V0.8</title>
+	<title>Add Event</title>
 	<body style="background-color: rgb(40,14,157); font-family: 'Calibri'; color:white">
 		<form name="mainForm" action="AddAppointment.php" onsubmit="return validateForm()" method="post">
 			<table width="450">

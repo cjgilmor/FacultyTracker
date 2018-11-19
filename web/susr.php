@@ -1,81 +1,75 @@
-<?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+
+<title>Tools</title>
+<link href="toolstyles.css" rel="stylesheet" type="text/css">
+</head>
 <?php
-include("connect.php");
-//Code to connect to the database
-$con = mysql_connect($hostname, $dbusername, $dbpassword);
-	
-//If it couldnt connect to the database, the error message will tell us why	
-if (!$con)
-{
-	die('Unable to connect to MySQL' . mysql_error());
-}
-
-$selected_db = mysql_select_db($databaseName, $con);
-
+session_start();
+include('nfMv6SUnU9.php');
 //Checks to see if the user is logged into the system
 if (!isset($_SESSION['basic_is_logged_in']) 
     || $_SESSION['basic_is_logged_in'] !== true) {
 
 	//Redirects the user to the login page
     ob_start();
-    include("floogin.php");
+    include("flogin.php");
     ob_flush();
 	exit;
-	
 }
+//WARNING! COULD NOT GET USERNAME CHECKING TO FUNCTION PROPERLY. CODE WILL NOT BE ABLE TO HCK FOR DUPLICATE USERNAMES.
 
-$name = $_POST['Name'];
-$username = strtolower($_POST['Username']);
-$pass = $_POST['pwd1'];
-$lvl = $_POST['lvl'];
-$uid = $_POST['hiddenField'];
+$type = $_POST['hf'];
+$uid = $_POST['huid'];
 
+$fname = $_POST['fname'];
+$lname = $_POST['lname'];
+$dept = $_POST['s-dept'];
+$email = $_POST['email'];
+$office = $_POST['office'];
+$un = strtolower($_POST['un']);
+$pw = $_POST['pass'];
+
+if(isset($pw) && trim($pw) != '')$pw = md5($pw);
 // Delete query:
 // DELETE FROM staff WHERE staffID = $uid;
-if(!$_POST['save'])
-{
+if($type=="2") {
 	// If delete is used
-	echo "<script type='text/javascript'>alert('" . $name . " was DELETED!');</script>";
-	mysql_query("DELETE FROM staff WHERE staffID = $uid") or die(mysql_error());
-	include("AdminHome.html");
-}
-else if($uid == NULL)		// If no user is selected, it means its a new user
-{
-	$qryUser = mysql_query("SELECT * FROM staff WHERE staff.username = $username");
-	
-	if($qryUser == false)
-	{
+	echo "<script type='text/javascript'>alert('".$fname." ".$lname." was DELETED!');</script>";
+	mysqli_query($conn, "DELETE FROM staff WHERE staffID = $uid") or die(mysqli_error($conn));
+} else if($type=="0")	{	// If no user is selected, it means its a new user
+
+//	$qryUser = mysqli_query($conn, "SELECT COUNT(staffID) AS output FROM staff WHERE staff.un = '$un'") or die(mysqli_error($conn));	
+//	if($qryUser->num_rows === 0) {
 		// Inserts the new users info into the database
-		$epass = md5($pass);
-		echo "<script type='text/javascript'>confirm('" . $name . " was inserted into the database.');</script>";
-		$sql = "INSERT INTO staff(name, username, password, level) VALUES ('$name', '$username', '$epass', '$lvl')";
-	}
-	else
-	{
-		echo "<script type='text/javascript'>alert('Username already exists');</script>";
-	}
+		echo "<script type='text/javascript'>confirm('".$fname." ".$lname." was inserted into the database.!!');</script>";
+		$sql = "INSERT INTO staff (deptID, fName, lName, titleID, email, office, un, pw, status) VALUES ('$dept', '$fname', '$lname', '2', '$email', '$office', '$un', '$pw', '0');";
+		mysqli_query($conn, $sql) or die(mysqli_error($conn));
+//	} else { echo "<script type='text/javascript'>alert('Username already exists.1');</script>"; }
 		
-}
-else
-{
+} else {
 	// Updates the existing users info in the database
-	if(strlen($pass)!= 32){$epass = md5($pass);}// To ensure you dont re-encrypt an encrypted password
-	else{$epass = $pass;}
-	echo "<script type='text/javascript'>confirm('" . $name . " was updated.');</script>";
-	$sql = "UPDATE staff SET name = '$name', username = '$username', password = '$epass', level = '$lvl' WHERE staff.staffID = '$uid'";
+//	$qryUser = mysqli_query($conn, "SELECT COUNT(staffID) AS output FROM staff WHERE un = '$un' && staffID <> '$uid'") or die(mysqli_error($conn));	
+//	if($qryUser && $qryUser->num_rows === 0) {
+		echo "<script type='text/javascript'>confirm('".$fname." ".$lname." was updated.');</script>";
+		if(!isset($pw)||trim($pw)=='') {
+			$sql = "UPDATE staff SET deptID = '$dept', fName='$fname', lName='$lname', email='$email', office='$office', un='$un' WHERE staffID='$uid'";
+		} else {
+			$sql = "UPDATE staff SET deptID = '$dept', fName='$fname', lName='$lname', email='$email', office='$office', un='$un', pw='$pw' WHERE staffID='$uid'";
+		}
+		mysqli_query($conn, $sql) or die(mysqli_error($conn));
+//	} else { echo "<script type='text/javascript'>alert('Username already exists.2');</script>"; }
 }
 
 // Does query based off "if" statement
-mysql_query($sql) or die(mysql_error());
+echo "CP1</br>";
+
 
 //Redirects to this page
 ob_start();
-include("Administrator.html");
+include("tools.php");
 ob_flush();
 exit;
 

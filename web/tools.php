@@ -1,5 +1,9 @@
 <?php
-session_start();
+
+if(session_id() == '' || !isset($_SESSION)) {
+    // session isn't started
+    session_start();
+}
 
 //Variables for Username, Password, Hostname
 
@@ -40,36 +44,30 @@ function displayIt()
 	
 	//document.frmLoadUser.submit();
 	return false;
+}function Add(){
+	document.forms["staff-table"].submit();
 }
-function Save()
-{
-	alert("Password 2: " + document.pwd2);
-	/*with(doucment.form1)
-	{
-		if(pwd1 == pwd2)
-		{
-			document.forms['form1'].submit();
-		}
-		else
-		{
-			alert("Passwords don't match");
-			return false;
-		}
-	}*/
-}
-function Remove()
-{
-
-	var del = confirm("Are you sure you want to DELETE user?");
-	
-	if(del == true)
-	{
-		document.forms["form1"].submit();
-	}
-	else
-	{
+function Save(){
+	var sav = confirm("Are you sure you want to save changes to user?");
+	if(sav == true) {
+		document.forms["staff-table"].submit();
+	} else {
 		return false;
 	}
+}
+function Remove(){
+	var del = confirm("Are you sure you want to DELETE user? This CANNOT be undone.");
+	if(del == true) {
+		document.forms["staff-table"].submit();
+	} else {
+		return false;
+	}
+}function Click(str){
+	
+	document.getElementById("hf").value=str;
+	if (str==0) return Add();
+	else if (str==1) return Save();
+	else if (str==2) return Remove();
 }
 function getData(type,str) {
     if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
@@ -107,6 +105,8 @@ function getS(uid){
 	getStaff(6, uid);
 	getStaff(7, uid);
 	getStaff(8, uid);
+	document.getElementById("sav").style = "display:inline";
+	document.getElementById("del").style = "display:inline";
 }
 
 function getStaff(type, uid){
@@ -121,6 +121,7 @@ function getStaff(type, uid){
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {// <- No idea. Just go with it.
 				document.getElementById("s"+type).innerHTML = this.responseText;
+
             }
         };
         xmlhttp.open("GET","getStaff.php?in="+uid+"&t="+type,true);
@@ -142,38 +143,41 @@ function getStaff(type, uid){
     </ul>
     </div>
 <body>
-
-<form name="frmLoadUser" method="post" action="">
-  <table>
-		<td>
-			<tr>
-				<select id="coll-list" onchange="getData(0,this.value)">
-					<option value="" selected >- SELECT COLLEGE -</option>
-					<?php
-						$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
-						while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
-					?>
-				</select>
-			</tr><tr>
-				<select id="dept-list" onchange="getData(1,this.value)"><option value="" selected >- SELECT DEPTARTMENT -</option></select>
-			</tr><tr><!-- name="staff-list" is needed for POST functionality -->
-				<select name="staff-list" id="staff-list" onchange="getS(this.value)"><option value="" selected >- SELECT STAFF MEMBER -</option></select>
-			</tr>
-		</td>
-	</table>
-</form>
 <style>
-	td {
+	td,th {
 		color:white;
+		border:0;
 	}
 </style>
 <hr />
 <form id="staff-table" name="staff-table" method="post" action="susr.php">
-  <table align="center" style="text-align:right" border="1" bordercolor="black" >
+<input type="hidden" name="hf" id="hf" value="0" />
+  <table align="center" style=" align:left; text-align:right; " cellpadding="5" border="2">
+  <th colspan=4 align=center>User Control</th>
+  <tr><td colspan="4" style="height:50px;" align=center>
+	  <table>
+			<td>
+				<tr>
+					<select id="coll-list" onchange="getData(0,this.value)">
+						<option value="" selected >- SELECT COLLEGE -</option>
+						<?php
+							$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
+							while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
+						?>
+					</select>
+				</tr><tr>
+					<select id="dept-list" onchange="getData(1,this.value)"><option value="" selected >- SELECT DEPTARTMENT -</option></select>
+				</tr><tr><!-- name="staff-list" is needed for POST functionality -->
+					<select name="staff-list" id="staff-list" onchange="getS(this.value)"><option value="" selected >- SELECT STAFF MEMBER -</option></select>
+				</tr>
+			</td>
+		</table>
+
+  </td></tr>
     <tr>
-      <td>*First name:</td><td><span id="s1"><input type="text" name="fname" id="fname" style="width:100%;"/></span></td>
+      <td>*First name:</td><td align=left><span id="s1"><input type="text" name="fname" id="fname" style="width:95%;" maxlength="50" pattern="[^><]+" /></span></td>
 	  <td>*College:</td>
-	  <td><span id="s2"><select name="s-coll" id="s-coll" style="width:100%" onchange="getData(2,this.value)">
+	  <td align=left><span id="s2"><select name="s-coll" id="s-coll" style="width:95%;" onchange="getData(2,this.value)">
 			<option value="" selected >- SELECT COLLEGE -</option> 
 			<?php
 				$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
@@ -182,21 +186,23 @@ function getStaff(type, uid){
 		</td>
     </tr>
     <tr>
-      <td>*Last name:</td><td><span id="s3"><input type="text" name="lname" id="lname" style="width:100%;"/></span></td>
-	  <td>*Department:</td><td><span id="s4"><select name="s-dept" id="s-dept" style="width:100%;"><option value="" selected >- SELECT DEPTARTMENT -</option></select></span></td>
+      <td>*Last name:</td><td align=left><span id="s3"><input type="text" name="lname" id="lname" style="width:95%;" maxlength="50" pattern="[^><]+" /></span></td>
+	  <td>*Department:</td><td align=left><span id="s4"><select name="s-dept" id="s-dept" style="width:95%;"><option value="" selected >- SELECT DEPTARTMENT -</option></select></span></td>
     </tr>
 	<tr>
-      <td>E-mail:</td><td><span id="s5"><input type="text" name="email" id="email" style="width:100%;"/></span></td>
-	  <td>Office:</td><td><span id="s6"><input type="text" name="office" id="office" style="width:100%;"/></span></td>
+      <td>E-mail:</td><td align=left><span id="s5"><input type="text" name="email" id="email" style="width:95%;" maxlength="50" pattern="[^><]+" /></span></td>
+	  <td>Office:</td><td align=left><span id="s6"><input type="text" name="office" id="office" style="width:95%;" maxlength="50" pattern="[^><]+"/></span></td>
     </tr>
-	<tr><td colspan="4" style="height:30px;" ><span id="s0" style="display:none"><input type="text" name="id" id="id" disabled /></td></tr>
-	<tr><td>*Username:</td><td colspan="3"><span id="s7"><input type="text" name="user" id="user" style="width:100%;"/></td></span></tr>
-	<tr><td>Current Password:</td><td colspan="3"><span id="s8"><input type="text" name="passO" id="passO" style="width:100%;" disabled value="test" /></span></td></tr>
+	<tr><td><i>ID:</i></td><td colspan="3" align=left><span id="s0"><input type="text" name="uid" id="uid" disabled /><input type="hidden" name="huid" id="huid" value="" /></span></td></tr>
+	<tr><td>*Username:</td><td colspan="3" align=left><span id="s7"><input type="text" name="un" id="un" style="width:95%;" maxlength="16" pattern="[^><]+" /></td></span></tr>
+	<tr><td><i>Current Password:</i></td><td colspan="3" align=left><span id="s8"><input type="text" name="passO" id="passO" size=32 disabled /></span></td></tr>
 	<tr><td colspan="4" style="height:30px;" ></td></tr>
-	<tr><td>New Password:</td><td colspan="3"><input type="password" name="pass" id="pass" style="width:100%;"/></td></tr>
-	<tr><td style="width:auto">Confirm Password:</td><td colspan="3"><input type="password" name="p2" id="p2" style="width:100%;" /></td></tr>
+	<tr><td>New Password:</td><td colspan="3" align=left><input type="password" name="pass" id="pass" size=32 pattern="[^><]+" /></td></tr>
 	<tr><td colspan="4" style="height:30px;" ></td></tr>
-	<tr><td align="right"><input type="button" name="b1" id="b1" value="Submit Changes" /></td><td></td><td colspan="2" align="left"><input type="button" name="b2" id="b2" value="Create New User" /></td></tr>
+	<tr><td align="right">
+		<input type="button" name="btnAdd" id="btnAdd" value="Add New User with Current Data" onclick="Click(0)" /></td><td>
+		<span id="sav" style="display:none"><input type="button" name="btnSave" id="btnSave" value="Submit Changes to Selected User" onclick="Click(1)" /></span></td><td align="left">
+		<span id="del" style="display:none"><input type="button" name="btnDel" id="btnDel" value="Delete Selected User" onclick="Click(2)" /></span></td></tr>
   </table>
 </form>
 </div>

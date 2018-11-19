@@ -86,7 +86,7 @@ if(!empty($_GET['eventID'])) {
 		document.getElementById("spanU3").innerHTML="<b> ...all events in this block.</b>";
 	}
 	</script>
-	<title>Edit Event - alpha V0.1</title>
+	<title>Edit Event</title>
 	<body style="background-color: rgb(40,14,157); font-family: 'Calibri'; color:white">
 		<form name="mainForm" action="AddAppointment.php<?php echo "?edit=$eventID&editBlock=$eBlock"; ?>" onsubmit="return validateForm()" method="post"> <!-- Please take note of the schema for action with parameters. -->
 			<table width="450">
