@@ -315,12 +315,8 @@ function ds_onclick(d, m, y) {
 	function dayEvents($startDay)
 	{
 		include('connect.php');
-/*		if(null !== trim($_POST['When'])){
-			$newdate = date('Y-m-d');
-		} else{	// Gets the current date
-		$newdate = $_POST['When'];
-	}*/
-		$newdate = date('Y-m-d');
+		if(isset($_POST['When']))$newdate = $_POST['When'];
+		else $newdate = date('Y-m-d');
 	  	//Time stamp
 	  	$ts = strtotime($newdate);
 	
@@ -364,10 +360,10 @@ function ds_onclick(d, m, y) {
 ?>
     <h2>Weekly Schedule</h2>
    	<p>
-    <form name="Date" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"" method="post" target="_self">
+    <form name="Date" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" target="_self">
      <label for="When">View Date:
-      <input name="When" value="<?php echo htmlspecialchars(date("Y-m-d"));?>" id="When" style="cursor: text" onfocus="ds_sh(this);" onclick="ds_sh(this);"/>
-      <input type="submit" formtarget="frame">
+      <input name="When" value="<?php echo htmlspecialchars(date("Y-m-d"));?>" id="When" style="cursor:text" onfocus="ds_sh(this);" onclick="ds_sh(this);"/>
+      <input type="submit" formtarget="frame" value="Go to Week">
      </label>
      </form>
   
@@ -396,11 +392,8 @@ function ds_onclick(d, m, y) {
       <tr align="center">
 	  
 	<?php
-//	  	if("" == trim($_POST['When'])){ $newdate = date('Y-m-d'); } 
-//		else{ $newdate =  $_POST['When']; }
-
-//	  $date = $newdate;
-	  $date = date('Y-m-d');
+	  	if(isset($_POST['When'])) $date =  $_POST['When'];
+		else $date = date('Y-m-d');
 	  //Time stamp
 	  $ts = strtotime($date);
 	  //Day of week
