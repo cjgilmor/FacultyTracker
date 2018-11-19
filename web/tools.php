@@ -4,7 +4,7 @@ session_start();
 //Variables for Username, Password, Hostname
 
 //Code for Our Server
-include('connect.php');
+include('nfMv6SUnU9.php');
 //Checks to see if the user is logged into the system
 if (!isset($_SESSION['basic_is_logged_in']) 
     || $_SESSION['basic_is_logged_in'] !== true) {
