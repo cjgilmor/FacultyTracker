@@ -5,7 +5,7 @@ include "connect.php";
 $str = intval($_GET['in']); //input string
 	$query = "SELECT * FROM events, staff
 			WHERE events.staffID = staff.staffID
-			AND staff.deptID = 2
+			AND staff.deptID = $str
 			AND CURDATE() = events.eventDate
 			AND CURTIME() BETWEEN events.startTime AND events.endTime";
 
@@ -16,13 +16,14 @@ $result = mysqli_query($conn, $query);
 	//If he doesnt then print out the regular event
 	
 	//Goes through the results
-	echo "<table class='weekly' width=600 border=2><tr><th> Faculty Name </th> <th> Current Location </th> <th> Until</th> </tr>";
+	echo "<table class='weekly' width=600 border=2;><tr><th> Faculty Name </th> <th> Current Location </th> <th> Until</th> </tr>";
 	while($row = mysqli_fetch_array($result)) {	
 			echo "<tr>";
+			if ($row['typeID']==0||$row['typeID']==2) $color="lightgreen"; else $color="white";
 			//This puts the results in the table
-			echo "<td align='center'>".$row['fName']." ".$row['lName']."</td>";
-			echo "<td align='center'>".$row['eventName']." (".$row['eventPlace'].")</td>";
-			echo "<td align='center'>".date('g:i a', strtotime($row['endTime']))."</td>";
+			echo "<td align='center' style='background-color:$color;'>".$row['fName']." ".$row['lName']."</td>";
+			echo "<td align='center' style='background-color:$color;'>".$row['eventName']." (".$row['eventPlace'].")</td>";
+			echo "<td align='center' style='background-color:$color;'>".date('g:i a', strtotime($row['endTime']))."</td>";
 			echo "</tr>";	
 	}echo "</table>";
 mysqli_close($conn);

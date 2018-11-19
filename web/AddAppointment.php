@@ -16,11 +16,12 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>Add Appointment</title>
 	</head>
-
+	
 	<?php
+	
 		include('connect.php');
 		function checkRepeat($uID, $date, $Stime, $Etime) {// FOR NEW EVENT
-		include('connect.php'); // <-- CONNECT PHP FILE REQUIRED INSIDE FUNCTION
+			include('connect.php'); // <-- CONNECT PHP FILE REQUIRED INSIDE FUNCTION
 			mysqli_real_escape_string($conn, $uID);
 			mysqli_real_escape_string($conn, $date);
 			mysqli_real_escape_string($conn, $Stime);
@@ -102,6 +103,7 @@
 				else $eType=3;
 			}
 		}
+		
 		$eventBlockID="";
 		if(isset($_GET['edit']) && !empty($_GET['edit'])) {
 			$edit = true; $editBlock = "";
@@ -109,6 +111,7 @@
 			if(isset($_GET['editBlock']) && $_GET['editBlock'] != NULL) {
 				$editBlock = true;
 				$eventBlockID = mysqli_real_escape_string($conn, $_GET['editBlock']);
+				
 			} else { $editBlock = false; }
 		} else { $edit = false; $editBlock = false; }
 

@@ -87,9 +87,10 @@ if(!empty($_GET['eventID'])) {
 	}
 	</script>
 	<title>Edit Event - alpha V0.1</title>
-	<body>
+	<body style="background-color: rgb(40,14,157); font-family: 'Calibri'; color:white">
 		<form name="mainForm" action="AddAppointment.php<?php echo "?edit=$eventID&editBlock=$eBlock"; ?>" onsubmit="return validateForm()" method="post"> <!-- Please take note of the schema for action with parameters. -->
 			<table width="450">
+				<tr><td colspan="2" height="80" style="text-align:center; font-size:30px; font-weight:bold; background-color:rgb(253,185,39); color:black; border-radius: 20px 50px;">Edit Event</td>
 				<tr>
 					<td>Event Name: <input type="text" id="txtName" name="txtName" maxlength="50" pattern="[^><]+" value="<?php echo $eName ?>" required></td>
 					<td>Place: <input type="text" id="txtPlace" name="txtPlace" maxlength="50" pattern="[^><]*" value="<?php echo $ePlace ?>"/></td>
@@ -100,7 +101,7 @@ if(!empty($_GET['eventID'])) {
 					</td>
 				</tr><tr>
 					<td colspan="2">
-						Are you Available? <input type="checkbox" name="cbAva" value="1" value="<?php echo $cAva ?>">
+						Are you Available? <input type="checkbox" name="cbAva" value="1" <?php echo $cAva ?>>
 					</td>
 				</tr>
 		</table> <table width="450">
@@ -115,8 +116,8 @@ if(!empty($_GET['eventID'])) {
 						<span id="sdBoxText">Date: <input type="date" id="dateStart" name="dateStart" value="<?php echo $eDate ?>" /></span><br/>
 						<div id="edBox" style="display:none">End Date: <input type="date" id="dateEnd" name="dateEnd" value="<?php echo $Date2 ?>"/></div>
 					</td><td>
-						Start Time:<input type="time" id="timeStart" name="timeStart" min="6:00" max="20:00" format: "hh:mm" value="<?php echo $eStart; ?>" /></br>
-						End Time:<input type="time" id="timeEnd" name="timeEnd" min="6:00" max="20:00" format: "hh:mm" value="<?php echo $eEnd; ?>" />
+						Start Time:<input type="time" id="timeStart" name="timeStart" value="<?php echo $eStart; ?>" /></br>
+						End Time:<input type="time" id="timeEnd" name="timeEnd" value="<?php echo $eEnd; ?>" />
 					</td>
 				</tr><tr>
 					<td colspan="2" height="25">

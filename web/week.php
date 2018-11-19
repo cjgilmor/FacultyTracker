@@ -347,16 +347,17 @@ function ds_onclick(d, m, y) {
 		while($row = mysqli_fetch_array($result))
 		{
 			echo "<tr>";
+			if ($row['typeID']==0||$row['typeID']==2) $color="lightgreen"; else $color="white";
 			//This puts the results in the table
-			echo "<td><input type='checkbox' name='check[]' value='" . $row['eventID'] . "'></td>";
+			echo "<td style='background-color:$color;'><input type='checkbox' name='check[]' value='" . $row['eventID'] . "'></td>";
 			$aurl = "Edit.php";
 			$aurl = $aurl . "?eventID=" . $row['eventID'];
-			$aurl = "window.open('".$aurl."','','width=500,height=420,0,status=0,scrollbars=0,left=50,top=20')";
+			$aurl = "window.open('".$aurl."','','width=470,height=520,0,status=0,scrollbars=0,left=50,top=20')";
 			$url = "descript.php";
 			$url = $url . "?eventID=" . $row['eventID'];
 			$url = "window.open('".$url."','','width=310,height=355,0,status=0,scrollbars=1,left=500,top=20')";
-			echo "<td><b><a href='javascript:void();' onClick=".$url.">" . $row['eventName'] . "</a></b><br/><small>". date("g:i a", strtotime($row['startTime'])) . "-" . date("g:i a", strtotime($row['endTime'])) . "</small></td>";			
-			echo "<td><a href='javascript:void();' onClick=".$aurl.">Edit</a>";
+			echo "<td style='background-color:$color;'><b><a href='javascript:void();' onClick=".$url.">" . $row['eventName'] . "</a></b><br/><small>". date("g:i a", strtotime($row['startTime'])) . "-" . date("g:i a", strtotime($row['endTime'])) . "</small></td>";			
+			echo "<td style='background-color:$color;'><a href='javascript:void();' onClick=".$aurl.">Edit</a>";
 			echo "</tr>";
 		}
 	}	
@@ -445,7 +446,7 @@ function ds_onclick(d, m, y) {
       <tr>
       <td height="27" colspan="5" valign="middle">
       <div align="left">
-        <input type='button' value="New" onClick=window.open("Add.php","","width=515,height=460,0,status=0,left=50,top=20");>
+        <input type='button' value="New" onClick=window.open("Add.php","","width=470,height=520,0,status=0,left=50,top=20");>
         <input name="del" type="button" onClick=Remove(); value="Delete" />
       </div>
       </form>

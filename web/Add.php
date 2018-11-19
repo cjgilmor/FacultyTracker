@@ -1,3 +1,4 @@
+<!-- APOLOGIES FOR THE HARD CODED ASTHETIC STYLE. RAN OUT OF TIME.-->
 <html>
 	<script>
 		//CONFIRMS NO BAD ENTRY DATA, THEN SUBMITS
@@ -28,11 +29,11 @@
 	}
 	</script>
 	<title>Add Event - alpha V0.8</title>
-	<body>
-		<form name="mainForm" action="AddAppointment.php" 
-onsubmit="return validateForm()" method="post">
+	<body style="background-color: rgb(40,14,157); font-family: 'Calibri'; color:white">
+		<form name="mainForm" action="AddAppointment.php" onsubmit="return validateForm()" method="post">
 			<table width="450">
-				<tr>
+				<tr><td colspan="2" height="80" style="text-align:center; font-size:30px; font-weight:bold; background-color:rgb(253,185,39); color:black; border-radius: 20px 50px;">Add Event</td>
+				</tr>
 					<td>Event Name: <input type="text" id="txtName" name="txtName" maxlength="50" pattern="[^><]+" required></td>
 					<td>Place: <input type="text" id="txtPlace" name="txtPlace" maxlength="50" pattern="[^><]*"/></td>
 				</tr><tr>
@@ -57,8 +58,8 @@ onsubmit="return validateForm()" method="post">
 						<span id="sdBoxText">Date: </span><input type="date" id="dateStart" name="dateStart" value="<?php echo date('Y-m-d'); ?>" /><br/>
 						<div id="edBox" style="display:none">End Date: <input type="date" id="dateEnd" name="dateEnd" value="<?php echo date('Y-m-d'); ?>"/></div>
 					</td><td>
-						Start Time:<input type="time" id="timeStart" name="timeStart" min="6:00" max="20:00" value="08:00" /></br>
-						End Time:<input type="time" id="timeEnd" name="timeEnd" min="6:00" max="20:00" value="08:50" />
+						Start Time:<input type="time" id="timeStart" name="timeStart" value="08:00" /></br>
+						End Time:<input type="time" id="timeEnd" name="timeEnd" value="08:50" />
 					</td>
 				</tr><tr>
 					<td colspan="2" height="25">
@@ -72,7 +73,7 @@ onsubmit="return validateForm()" method="post">
 					</td>
 				</tr><tr>
 					<td colspan="2">
-						Override existing events? <input type="checkbox" name="cbOvr" value="1">
+						Override existing events? <input type="checkbox" name="cbOvr" value="1" checked >
 					</td>
 				</tr>
 			</table> <table width="450">

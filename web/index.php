@@ -77,7 +77,7 @@ function getGlance(str) {
 		<span id="event-table-data"></span>
 	
          
-		<p> NOTICE! Assume faculty member is not available if you do not see them listed </p>
+		<p> NOTICE! If an event is highlighted in green, the instructor is available.</br>If you do not see them listed, assume they are not available. </p>
       </div> <!--End at a glance-->
     </div> <!--End main content-->
 	&nbsp;

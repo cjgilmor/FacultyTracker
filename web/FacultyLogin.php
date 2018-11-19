@@ -8,7 +8,7 @@
 	<body> 
 		<div class="wrapper" align= "center">
 			<?php include("headnav.php") ?>   
-				  <h3> Login </h3>
+				  <h3 style="color:white"> Login </h3>
 				<form action="flogin.php" method="POST"> 
 					<table border=1>
 						<tr><td><input type="text" name="username" class="log_user" placeholder="Username" /></td></tr>

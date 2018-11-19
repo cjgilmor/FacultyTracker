@@ -162,7 +162,7 @@ function getEvents(str, uid) {
     <p>Weekly Schedule <?php if(isset($name))echo "for: ". $name; ?></p></h3>
   </div>
     <div align="center" class="week">
-    <p> NOTICE! If you do not see a scheduled event, assume faculty member is not available.  </p>
+    <p> NOTICE! If an event is highlighted in green, the instructor is available.</br>If you do not see an event listed, assume they are not available. </p>
     <table class="weekly" width="800" height="314" border="2" cellpadding="1">
       <tr>
         <th height="25" colspan="5" bgcolor="gold"><center><font color="navy"> Agenda </font></center></th>
