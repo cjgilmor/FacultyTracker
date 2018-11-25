@@ -55,10 +55,6 @@ if(!empty($_GET['eventID'])) {
 <html>
 	<script>
 	//CONFIRMS NO BAD ENTRY DATA, THEN SUBMITS
-	function checkConflicts(d1,d2,t1,t2){
-		
-		
-	}
 	function validateForm(){
 //		var rbt = document.forms["mainForm"]["rbTimes"].value;
 		var	d1 = document.forms["mainForm"]["dateStart"].value;
