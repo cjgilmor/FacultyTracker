@@ -1,18 +1,30 @@
+<?php
+session_start();
+//Checks to see if the user is logged into the system
+if (!isset($_SESSION['basic_is_logged_in']) 
+    || $_SESSION['basic_is_logged_in'] !== true) {
+	//Redirects the user to the login page
+    ob_start();
+    include("FLogin.php");
+    ob_flush();
+	exit;
+	
+	$uID = $_SESSION['staffID'];
+}?>
 <!-- APOLOGIES FOR THE HARD CODED ASTHETIC STYLE. RAN OUT OF TIME.-->
 <html>
 	<script>
 		//CONFIRMS NO BAD ENTRY DATA, THEN SUBMITS
 	function validateForm(){
-//		var rbt = document.forms["mainForm"]["rbTimes"].value;
 		var	d1 = document.forms["mainForm"]["dateStart"].value;
 		var	d2 = document.forms["mainForm"]["dateEnd"].value;
 		var	t1 = document.forms["mainForm"]["timeStart"].value;
 		var	t2 = document.forms["mainForm"]["timeEnd"].value;
-//		if ( rbt==2 && d1 > d2 ) 
 		if ( d1 > d2 ) 
 			{ alert("End date cannot come BEFORE start date."); return false; }
 		else if ( t1 > t2 ) 
 			{ alert("End time cannot come BEFORE start time."); return false; }
+
 	}
 	function showMultiple(str) {
 		if (str == "") return; //DOES NOTHING WHEN NO ENTRY IS SELECTED
@@ -31,6 +43,7 @@
 	<title>Add Event</title>
 	<body style="background-color: rgb(40,14,157); font-family: 'Calibri'; color:white">
 		<form name="mainForm" action="AddAppointment.php" onsubmit="return validateForm()" method="post">
+		<input type="hidden" name="conflicts" id="conflicts" value="0" />
 			<table width="450">
 				<tr><td colspan="2" height="80" style="text-align:center; font-size:30px; font-weight:bold; background-color:rgb(253,185,39); color:black; border-radius: 20px 50px;">Add Event</td>
 				</tr>

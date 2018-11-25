@@ -1,14 +1,12 @@
 <!doctype html>
 <html>
 <head>
-
 <meta charset="utf-8">
 <link href="stylesheet.css" rel="stylesheet" type="text/css">
 </head>
-
 <body>
 <div id="header" align="center">
-	  <h2> Faculty Tracker </h2>
+	  <h2 style="color:black"> NCAT Faculty Tracker </h2>
 	</div> <!--End header-->
 	<div id="nav">
     

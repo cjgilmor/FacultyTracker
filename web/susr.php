@@ -64,9 +64,6 @@ if($type=="2") {
 }
 
 // Does query based off "if" statement
-echo "CP1</br>";
-
-
 //Redirects to this page
 ob_start();
 include("tools.php");

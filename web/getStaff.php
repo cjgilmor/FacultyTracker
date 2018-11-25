@@ -12,9 +12,9 @@ if ($type==2||$type==4) {
 	$result = mysqli_query($conn, $query);
 	$row = mysqli_fetch_array($result); $coll=$row['collID']; $dep=$row['deptID'];
 	if ($type==2) { echo "<select name='s-coll' id='s-coll' style='width:95%;' onchange='getData(2,this.value)'><option value=''>- SELECT COLLEGE -</option>";
-		$query="SELECT * FROM college;";
+		$query="SELECT * FROM college ORDER BY collName ASC;";
 	} else { echo "<select name='s-dept' id='s-dept' style='width:95%;'><option value=''>- SELECT DEPTARTMENT -</option>";
-		$query="SELECT * FROM dept WHERE collID='".$coll."';";
+		$query="SELECT * FROM dept WHERE collID='".$coll."' ORDER BY deptName ASC;";
 	}
 }
 $result = mysqli_query($conn, $query);
@@ -31,7 +31,7 @@ while($row = mysqli_fetch_array($result)) {
 	} if ($type==5) echo "<input type='text' name='email' id='email' style='width:95%;' maxlength='50' pattern='[^><]+' value = '".$row['email']."'/>";
 	if ($type==6) echo "<input type='text' name='office' id='office' style='width:95%;' maxlength='50' pattern='[^><]+' value = '".$row['office']."'/>";
 	if ($type==7) echo "<input type='text' name='un' id='un' style='width:95%;' maxlength='16' pattern='[^><]+' value = '".$row['un']."'/>";
-	if ($type==8) echo "<input type='text' name='pass' id='pass' size=32 pattern='[^><]+' value = '".$row['pw']."' disabled />";
+	if ($type==8) echo "<input type='text' name='pass' id='pass' size=32 pattern='[^><]+' value = '".$row['pw']."' style='width:50%;' disabled />";
 }if ($type==2||$type==4) echo "</select>";
 mysqli_close($conn);
 ?>

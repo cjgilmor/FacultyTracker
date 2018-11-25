@@ -12,11 +12,11 @@ $str = intval($_GET['in']); //input string
 //If possible, this box can be expanded to incorporate more dropbox populations
 
 if ($type==0||$type==2){ 
-	$query="SELECT * FROM dept WHERE collID='".$str."';";
-	echo "<option value='' selected >- SELECT DEPTARTMENT -</option>";
+	$query="SELECT * FROM dept WHERE collID='".$str."' ORDER BY deptName ASC;";
+	echo "<option value='-1' selected >- SELECT DEPTARTMENT -</option>";
 } else {
-	$query="SELECT * FROM staff WHERE deptID='".$str."';";
-	echo "<option value='' selected >- SELECT STAFF MEMBER -</option>";
+	$query="SELECT * FROM staff WHERE deptID='".$str."' AND status <> '2' ORDER BY lName ASC;";
+	echo "<option value='-1' selected >- SELECT STAFF MEMBER -</option>";
 }
 
 $result = mysqli_query($conn, $query);

@@ -11,7 +11,7 @@
 <script>
 function getData(type,str) {
     if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
-		if (type==0) document.getElementById("dept-list").innerHTML = "<option value=\"\" selected >- SELECT DEPTARTMENT -</option>"; 
+		if (type==0) document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
 		return;
 	} else {
 		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari

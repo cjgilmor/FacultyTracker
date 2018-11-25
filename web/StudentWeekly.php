@@ -29,8 +29,8 @@ if(isset($_POST["staff-list"]))
 <script>
 function getData(type,str) {
     if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
-		if (type==0) document.getElementById("dept-list").innerHTML = "<option value=\"\" selected >- SELECT DEPTARTMENT -</option>"; 
-		document.getElementById("staff-list").innerHTML = "<option value=\"\" selected >- SELECT STAFF MEMBER -</option>";
+		if (type==0) document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
+		document.getElementById("staff-list").innerHTML = "<option value='-1' selected >- SELECT STAFF MEMBER -</option>";
 		return;
 	} else {
 		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
@@ -101,9 +101,9 @@ function getEvents(str, uid) {
 					?>
 				</select>
 			</tr><tr>
-				<select id="dept-list" onchange="getData(1,this.value)"><option value="" selected >- SELECT DEPTARTMENT -</option></select>
+				<select id="dept-list" onchange="getData(1,this.value)"><option value='-1' selected >- SELECT DEPTARTMENT -</option></select>
 			</tr><tr><!-- name="staff-list" is needed for POST functionality -->
-				<select name="staff-list" id="staff-list" onchange="getE(this.value)"><option value="" selected >- SELECT STAFF MEMBER -</option></select>
+				<select name="staff-list" id="staff-list" onchange="getE(this.value)"><option value='-1' selected >- SELECT STAFF MEMBER -</option></select>
 			</tr>
 		</td>
 	</table>

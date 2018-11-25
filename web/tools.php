@@ -31,20 +31,20 @@ if (!isset($_SESSION['basic_is_logged_in'])
 <div class="wrapper" align= "center">
 	<?php include("headnav.php"); ?>
 <div id="content">
-
-
-
-
 <script type="text/javascript">
-function displayIt()
-{
-	alert("called from Display");
-	//var elmt = document.getElementsByName("Name");
-	//elmt.value = "Name";
-	
-	//document.frmLoadUser.submit();
-	return false;
-}function Add(){
+
+function CheckValidity(str){
+	if (document.getElementById("fname").value=="") { return false; }
+	else if (document.getElementById("fname").value=="") { return false; }
+	else if (document.getElementById("s-dept").value==-1) { return false; }
+	else if (document.getElementById("un").value==""<?php
+		$result = mysqli_query($conn, "SELECT un, staffID FROM staff;") or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result)) { echo " || document.getElementById('un').value=='".$row['un']."' && document.getElementById('huid').value!='".$row['staffID']."'"; }
+	?>) { return false; }
+	else if (str==0 && document.getElementById("pass").value=="") { return false; }
+	else return true;
+}
+function Add(){
 	document.forms["staff-table"].submit();
 }
 function Save(){
@@ -62,20 +62,22 @@ function Remove(){
 	} else {
 		return false;
 	}
-}function Click(str){
-	
+}
+function Click(str){
 	document.getElementById("hf").value=str;
-	if (str==0) return Add();
-	else if (str==1) return Save();
-	else if (str==2) return Remove();
+	if (CheckValidity(str)){
+		if (str==0) return Add();
+		else if (str==1) return Save();
+		else if (str==2) return Remove();
+	} else alert("You are missing one or more required fields.\n\nUsernames MUST be unique!\nNew users MUST have a password!");
 }
 function getData(type,str) {
     if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
 		if (type==0||type==1){
-			if (type==0) document.getElementById("dept-list").innerHTML = "<option value=\"\" selected >- SELECT DEPTARTMENT -</option>"; 
-			document.getElementById("staff-list").innerHTML = "<option value=\"\" selected >- SELECT STAFF MEMBER -</option>";
+			if (type==0) document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
+			document.getElementById("staff-list").innerHTML = "<option value='-1' selected >- SELECT STAFF MEMBER -</option>";
 		}if (type==2){
-			document.getElementById("s-dept").innerHTML = "<option value=\"\" selected >- SELECT DEPTARTMENT -</option>"; 
+			document.getElementById("s-dept").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
 		}
 		return;
 	} else {
@@ -159,16 +161,16 @@ function getStaff(type, uid){
 			<td>
 				<tr>
 					<select id="coll-list" onchange="getData(0,this.value)">
-						<option value="" selected >- SELECT COLLEGE -</option>
+						<option value='-1' selected >- SELECT COLLEGE -</option>
 						<?php
 							$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
 							while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
 						?>
 					</select>
 				</tr><tr>
-					<select id="dept-list" onchange="getData(1,this.value)"><option value="" selected >- SELECT DEPTARTMENT -</option></select>
+					<select id="dept-list" onchange="getData(1,this.value)"><option value='-1' selected >- SELECT DEPTARTMENT -</option></select>
 				</tr><tr><!-- name="staff-list" is needed for POST functionality -->
-					<select name="staff-list" id="staff-list" onchange="getS(this.value)"><option value="" selected >- SELECT STAFF MEMBER -</option></select>
+					<select name="staff-list" id="staff-list" onchange="getS(this.value)"><option value='-1' selected >- SELECT STAFF MEMBER -</option></select>
 				</tr>
 			</td>
 		</table>
@@ -178,7 +180,7 @@ function getStaff(type, uid){
       <td>*First name:</td><td align=left><span id="s1"><input type="text" name="fname" id="fname" style="width:95%;" maxlength="50" pattern="[^><]+" /></span></td>
 	  <td>*College:</td>
 	  <td align=left><span id="s2"><select name="s-coll" id="s-coll" style="width:95%;" onchange="getData(2,this.value)">
-			<option value="" selected >- SELECT COLLEGE -</option> 
+			<option value='-1' selected >- SELECT COLLEGE -</option> 
 			<?php
 				$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
 				while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
@@ -187,7 +189,7 @@ function getStaff(type, uid){
     </tr>
     <tr>
       <td>*Last name:</td><td align=left><span id="s3"><input type="text" name="lname" id="lname" style="width:95%;" maxlength="50" pattern="[^><]+" /></span></td>
-	  <td>*Department:</td><td align=left><span id="s4"><select name="s-dept" id="s-dept" style="width:95%;"><option value="" selected >- SELECT DEPTARTMENT -</option></select></span></td>
+	  <td>*Department:</td><td align=left><span id="s4"><select name="s-dept" id="s-dept" style="width:95%;"><option value='-1' selected >- SELECT DEPTARTMENT -</option></select></span></td>
     </tr>
 	<tr>
       <td>E-mail:</td><td align=left><span id="s5"><input type="text" name="email" id="email" style="width:95%;" maxlength="50" pattern="[^><]+" /></span></td>
@@ -195,7 +197,7 @@ function getStaff(type, uid){
     </tr>
 	<tr><td><i>ID:</i></td><td colspan="3" align=left><span id="s0"><input type="text" name="uid" id="uid" disabled /><input type="hidden" name="huid" id="huid" value="" /></span></td></tr>
 	<tr><td>*Username:</td><td colspan="3" align=left><span id="s7"><input type="text" name="un" id="un" style="width:95%;" maxlength="16" pattern="[^><]+" /></td></span></tr>
-	<tr><td><i>Current Password:</i></td><td colspan="3" align=left><span id="s8"><input type="text" name="passO" id="passO" size=32 disabled /></span></td></tr>
+	<tr><td><i>Current Password:</i></td><td colspan="3" align=left><span id="s8"><input type="text" name="passO" id="passO" style="width:50%;" disabled /></span></td></tr>
 	<tr><td colspan="4" style="height:30px;" ></td></tr>
 	<tr><td>New Password:</td><td colspan="3" align=left><input type="password" name="pass" id="pass" size=32 pattern="[^><]+" /></td></tr>
 	<tr><td colspan="4" style="height:30px;" ></td></tr>
