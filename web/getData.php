@@ -11,7 +11,7 @@ $str = intval($_GET['in']); //input string
 //ELSE ($type = 1) means that the staff box will populate.
 //If possible, this box can be expanded to incorporate more dropbox populations
 
-if ($type==0||$type==2){ 
+if ($type==0||$type==2||$type==3){ 
 	$query="SELECT * FROM dept WHERE collID='".$str."' ORDER BY deptName ASC;";
 	echo "<option value='-1' selected >- SELECT DEPTARTMENT -</option>";
 } else {
@@ -21,7 +21,7 @@ if ($type==0||$type==2){
 
 $result = mysqli_query($conn, $query);
 while($row = mysqli_fetch_array($result)) {
-    if ($type==0||$type==2) echo "<option value=" . $row['deptID'] . ">" . $row['deptName'] . "</option>";
+    if ($type==0||$type==2||$type==3) echo "<option value=" . $row['deptID'] . ">" . $row['deptName'] . "</option>";
 	else echo "<option value=" . $row['staffID'] . ">" . $row['lName'] . ", ".$row['fName']."</option>";
 }
 mysqli_close($conn);

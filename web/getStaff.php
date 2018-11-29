@@ -11,15 +11,15 @@ if ($type==2||$type==4) {
 	$query="SELECT * FROM college LEFT JOIN dept ON college.collID=dept.collID LEFT JOIN staff ON dept.deptID=staff.deptID WHERE staffID='".$str."';";
 	$result = mysqli_query($conn, $query);
 	$row = mysqli_fetch_array($result); $coll=$row['collID']; $dep=$row['deptID'];
-	if ($type==2) { echo "<select name='s-coll' id='s-coll' style='width:95%;' onchange='getData(2,this.value)'><option value=''>- SELECT COLLEGE -</option>";
+	if ($type==2) { echo "<select name='s-coll' id='s-coll' style='width:95%;' onchange='getData(2,this.value)'><option value='-1'>- SELECT COLLEGE -</option>";
 		$query="SELECT * FROM college ORDER BY collName ASC;";
-	} else { echo "<select name='s-dept' id='s-dept' style='width:95%;'><option value=''>- SELECT DEPTARTMENT -</option>";
+	} else { echo "<select name='s-dept' id='s-dept' style='width:95%;'><option value='-1'>- SELECT DEPTARTMENT -</option>";
 		$query="SELECT * FROM dept WHERE collID='".$coll."' ORDER BY deptName ASC;";
 	}
 }
 $result = mysqli_query($conn, $query);
 while($row = mysqli_fetch_array($result)) {
-	if ($type==0) echo "<input type='text' name='uid' id='uid' value='".$row['staffID']."' disabled /><input type='hidden' name='huid' id='huid' pattern='[^><]+' value='".$row['staffID']."' />";
+	if ($type==0) echo "<input type='text' name='uid' id='uid' value='".$row['staffID']."' disabled /><input type='hidden' name='huid' id='huid' value='".$row['staffID']."' />";
     if ($type==1) echo "<input type='text' name='fname' id='fname' style='width:95%;' maxlength='50' pattern='[^><]+' value = '".$row['fName']."'/>";
 	if ($type==2) {
 		if ($coll==$row['collID']) echo "<option value = '".$row['collID']."' selected />".$row['collName']."</option>";
