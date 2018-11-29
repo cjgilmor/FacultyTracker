@@ -39,11 +39,9 @@ if($type=="1") {//INSERT
 	mysqli_query($conn, $sql) or die(mysqli_error($conn));
 	echo "<script type='text/javascript'>alert('".$dname." was DELETED!');</script>";
 }
-// Does query based off "if" statement
 //Redirects to this page
-ob_start();
-include("tools.php");
-ob_flush();
+
+echo "<script>document.location='tools.php';</script>";
 exit;
 ?>
 

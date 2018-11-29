@@ -64,16 +64,10 @@ if($type=="3") {
 
 // Does query based off "if" statement
 //Redirects to this page
-ob_start();
-include("tools.php");
-ob_flush();
+
+echo "<script>document.location='tools.php';</script>";
 exit;
-
 ?>
-
-
 </head>
-<body>
-
-</body>
+<body></body>
 </html>
