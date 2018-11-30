@@ -10,7 +10,7 @@
 </head>
 <script>
 function getData(type,str) {
-    if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+    if (str == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
 		if (type==0) document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
 		return;
 	} else {
@@ -30,8 +30,8 @@ function getData(type,str) {
     }
 }
 function getGlance(str) {
-    if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
-		document.getElementById("event-table-data").innerHTML = "<tr><th> Faculty Name </th> <th> Current Location </th> <th> Until</th> </tr>"; 
+    if (str == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+		document.getElementById("event-table-data").innerHTML = ""; 
 		return;
 	} else {
 		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
@@ -58,14 +58,14 @@ function getGlance(str) {
 		<td>
 			<tr>
 				<select id="coll-list" onchange="getData(0,this.value)">
-					<option value="" selected >- SELECT COLLEGE -</option>
+					<option value="-1" selected >- SELECT COLLEGE -</option>
 					<?php
 						$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
 						while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
 					?>
 				</select>
 			</tr><tr>
-				<select id="dept-list" onchange="getGlance(this.value)"><option value="" selected >- SELECT DEPTARTMENT -</option></select>
+				<select id="dept-list" onchange="getGlance(this.value)"><option value="-1" selected >- SELECT DEPTARTMENT -</option></select>
 			</tr>
 		</td>
 	</table>

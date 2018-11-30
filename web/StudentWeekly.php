@@ -28,7 +28,7 @@ if(isset($_POST["staff-list"]))
 <title>Weekly Schedule <?php if(isset($name))echo "| " . $name; ?></title>
 <script>
 function getData(type,str) {
-    if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+    if (str == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
 		if (type==0) document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
 		document.getElementById("staff-list").innerHTML = "<option value='-1' selected >- SELECT STAFF MEMBER -</option>";
 		return;
@@ -94,7 +94,7 @@ function getEvents(str, uid) {
 		<td>
 			<tr>
 				<select id="coll-list" onchange="getData(0,this.value)">
-					<option value="" selected >- SELECT COLLEGE -</option>
+					<option value="-1" selected >- SELECT COLLEGE -</option>
 					<?php
 						$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
 						while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }

@@ -34,7 +34,7 @@ if (!isset($_SESSION['basic_is_logged_in'])
 
 //POPULATES DROPDOWN BOXES
 function getData(type,str) {
-    if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+    if (str == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
 		if (type==0||type==1){
 			if (type==0) document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
 			document.getElementById("staff-list").innerHTML = "<option value='-1' selected >- SELECT STAFF MEMBER -</option>";
@@ -151,7 +151,7 @@ function getS(uid){
 	document.getElementById("del").style = "display:inline";
 }
 function getStaff(type, uid){
-    if (uid == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+    if (uid == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
 		return;
 	} else {
 		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
@@ -179,7 +179,7 @@ function getC(cid){
 	document.getElementById("ct-del").style = "display:inline";
 }
 function getCollege(type, cid){
-    if (cid == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+    if (cid == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
 		return;
 	} else {
 		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
@@ -205,7 +205,7 @@ function getD(did){
 	document.getElementById("dt-del").style = "display:inline";
 }
 function getDept(type, did){
-    if (did == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+    if (did == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
 		return;
 	} else {
 		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
