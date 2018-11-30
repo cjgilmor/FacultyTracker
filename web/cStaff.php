@@ -65,7 +65,7 @@ if($type=="3") {
 // Does query based off "if" statement
 //Redirects to this page
 
-echo "<script>document.location='tools.php';</script>";
+echo "<script type='text/javascript'>document.location='tools.php';</script>";
 exit;
 ?>
 </head>

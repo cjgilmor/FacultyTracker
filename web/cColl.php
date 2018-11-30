@@ -40,7 +40,7 @@ if($type=="1") {//INSERT
 }
 //Redirects to this page
 
-echo "<script>document.location='tools.php';</script>";
+echo "<script type='text/javascript'>document.location='tools.php';</script>";
 exit;
 ?>
 
