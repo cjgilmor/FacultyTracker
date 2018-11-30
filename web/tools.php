@@ -71,7 +71,7 @@ function CheckValidity(str,type){
 			$result = mysqli_query($conn, "SELECT un, staffID FROM staff;") or die(mysqli_error($conn));
 			while($row = mysqli_fetch_array($result)) { echo " || document.getElementById('un').value=='".$row['un']."' && document.getElementById('huid').value!='".$row['staffID']."'"; }
 		?>) { return false; }
-		else if (str==0 && document.getElementById("pass").value=="") { return false; }
+		else if (str==1 && document.getElementById("pass").value=="") { return false; }
 		else return true;
 	}if (type==2){
 		if (document.getElementById("ct-cname").value=="") { return false; }
