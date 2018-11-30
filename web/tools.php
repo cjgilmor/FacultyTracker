@@ -69,7 +69,7 @@ function CheckValidity(str,type){
 		else if (document.getElementById("s-dept").value==-1) { return false; }
 		else if (document.getElementById("un").value==""<?php
 			$result = mysqli_query($conn, "SELECT un, staffID FROM staff;") or die(mysqli_error($conn));
-			while($row = mysqli_fetch_array($result)) { echo " || document.getElementById('un').value=='".$row['un']."' && document.getElementById('huid').value!='".$row['staffID']."'"; }
+			while($row = mysqli_fetch_array($result)) { echo " || document.getElementById('un').value=='".$row['un']."' && ( str==1||document.getElementById('huid').value!='".$row['staffID']."')"; }
 		?>) { return false; }
 		else if (str==1 && document.getElementById("pass").value=="") { return false; }
 		else return true;
