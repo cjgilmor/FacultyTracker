@@ -74,6 +74,8 @@ if(!empty($_GET['eventID'])) {
 			{ alert("End date cannot come BEFORE start date."); return false; }
 		else if (!document.forms["mainForm"]["cbAllDay"].checked && t1 > t2 ) 
 			{ alert("End time cannot come BEFORE start time."); return false; }
+		else if (!document.forms["mainForm"]["cbAllDay"].checked && t1 == t2 ) 
+			{ alert("Start time and end time CANNOT be the same value."); return false; }
 	}
 	function showMultiple(str) {
 		if (str == "") return; //DOES NOTHING WHEN NO ENTRY IS SELECTED
