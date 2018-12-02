@@ -11,7 +11,7 @@ if ($type==2||$type==4) {
 	$query="SELECT * FROM college LEFT JOIN dept ON college.collID=dept.collID LEFT JOIN staff ON dept.deptID=staff.deptID WHERE staffID='".$str."';";
 	$result = mysqli_query($conn, $query);
 	$row = mysqli_fetch_array($result); $coll=$row['collID']; $dep=$row['deptID'];
-	if ($type==2) { echo "<select name='s-coll' id='s-coll' style='width:95%;' onchange='getData(2,this.value)'><option value='-1'>- SELECT COLLEGE -</option>";
+	if ($type==2) { echo "<select name='s-coll' id='s-coll' style='width:95%;' onchange='getData(5,this.value)'><option value='-1'>- SELECT COLLEGE -</option>";
 		$query="SELECT * FROM college ORDER BY collName ASC;";
 	} else { echo "<select name='s-dept' id='s-dept' style='width:95%;'><option value='-1'>- SELECT DEPTARTMENT -</option>";
 		$query="SELECT * FROM dept WHERE collID='".$coll."' ORDER BY deptName ASC;";

@@ -33,15 +33,13 @@ if (!isset($_SESSION['basic_is_logged_in'])
 <script type="text/javascript">
 
 //POPULATES DROPDOWN BOXES
-function getData(type,str) {
-    if (str == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
-		if (type==0||type==1){
-			if (type==0) document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
-			document.getElementById("staff-list").innerHTML = "<option value='-1' selected >- SELECT STAFF MEMBER -</option>";
-		}if (type==2){
-			document.getElementById("s-dept").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
-		}if (type==3)
-			document.getElementById("dept-list3").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
+function getData(type,input,sel) {
+    if (input == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+		if (type==2||type==3){
+			if (type==2) { document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; updateSession(5,-1); }
+			document.getElementById("staff-list").innerHTML = "<option value='-1' selected >- SELECT STAFF MEMBER -</option>"; updateSession(6,-1);
+		}if (type==5) { document.getElementById("s-dept").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
+		}if (type==8) { document.getElementById("dept-list3").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; updateSession(9,-1); }
 		return;
 	} else {
 		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
@@ -51,15 +49,28 @@ function getData(type,str) {
         }
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {// <- No idea. Just go with it.
-				if (type==0) document.getElementById("dept-list").innerHTML = this.responseText;
-				else if (type==1) document.getElementById("staff-list").innerHTML = this.responseText;
-				else if (type==2) document.getElementById("s-dept").innerHTML = this.responseText;
-				else if (type==3) document.getElementById("dept-list3").innerHTML = this.responseText;
+				if (type==1) document.getElementById("coll-list").innerHTML = this.responseText;
+				else if (type==2) document.getElementById("dept-list").innerHTML = this.responseText;
+				else if (type==3) document.getElementById("staff-list").innerHTML = this.responseText;
+				else if (type==4) document.getElementById("s-coll").innerHTML = this.responseText;
+				else if (type==5) document.getElementById("s-dept").innerHTML = this.responseText;
+				else if (type==6) document.getElementById("ct_coll-list").innerHTML = this.responseText;
+				else if (type==7) document.getElementById("coll-list3").innerHTML = this.responseText;
+				else if (type==8) document.getElementById("dept-list3").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("GET","getData.php?t="+type+"&in="+str,true);
+        xmlhttp.open("GET","getData.php?t="+type+"&in="+input+"&s="+sel,true);
         xmlhttp.send();
     }
+}
+function updateSession(type,input) {
+	if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp = new XMLHttpRequest();
+	} else { // <- code for IE6, IE5
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.open("GET","upSession.php?t="+type+"&in="+input,true);
+	xmlhttp.send();
 }
 
 function CheckValidity(str,type){
@@ -256,24 +267,24 @@ function getDept(type, did){
 							<table>
 								<td>
 									<tr>
-										<select id="coll-list" onchange="getData(0,this.value)">
+										<select id="coll-list" onchange="getData(2,this.value,-1); updateSession(4,this.value);">
 											<option value='-1' selected >- SELECT COLLEGE -</option>
 											<?php
-												$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
+												$result = mysqli_query($conn, "SELECT * FROM college ORDER BY collName ASC;") or die(mysqli_error($conn));
 												while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
 											?>
 										</select>
 									</tr><tr>
-										<select id="dept-list" onchange="getData(1,this.value)"><option value='-1' selected >- SELECT DEPTARTMENT -</option></select>
+										<select id="dept-list" onchange="getData(3,this.value,-1); updateSession(5,this.value);"><option value='-1' selected >- SELECT DEPTARTMENT -</option></select>
 									</tr><tr><!-- name="staff-list" is needed for POST functionality -->
-										<select name="staff-list" id="staff-list" onchange="getS(this.value)"><option value='-1' selected >- SELECT STAFF MEMBER -</option></select>
+										<select name="staff-list" id="staff-list" onchange="getS(this.value); updateSession(6,this.value);"><option value='-1' selected >- SELECT STAFF MEMBER -</option></select>
 									</tr>
 								</td>
 							</table>
 						</td>
 					</tr><tr>
 						<td>*First name:</td><td align=left><span id="s1"><input type="text" name="fname" id="fname" style="width:95%;" maxlength="50" pattern="[^><]+" /></span></td>
-						<td>*College:</td><td align=left><span id="s2"><select name="s-coll" id="s-coll" style="width:95%;" onchange="getData(2,this.value)">
+						<td>*College:</td><td align=left><span id="s2"><select name="s-coll" id="s-coll" style="width:95%;" onchange="getData(5,this.value,-1)">
 							<option value='-1' selected >- SELECT COLLEGE -</option> 
 							<?php
 								$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
@@ -314,10 +325,10 @@ function getDept(type, did){
 					<th colspan=3 align=center>College Control</th>
 					<tr>
 						<td colspan=3 style="height:50px;" align=center>
-							<select id="ct_coll-list" onchange="getC(this.value)">
+							<select id="ct_coll-list" onchange="getC(this.value); updateSession(7,this.value);">
 								<option value='-1' selected >- SELECT COLLEGE -</option>
 								<?php
-									$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
+									$result = mysqli_query($conn, "SELECT * FROM college ORDER BY collName ASC;") or die(mysqli_error($conn));
 									while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
 								?>
 							</select>
@@ -349,15 +360,15 @@ function getDept(type, did){
 							<table>
 								<td>
 									<tr>
-										<select id="coll-list3" onchange="getData(3,this.value)">
+										<select id="coll-list3" onchange="getData(8,this.value,-1); updateSession(8,this.value);">
 											<option value='-1' selected >- SELECT COLLEGE -</option>
 											<?php
-												$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
+												$result = mysqli_query($conn, "SELECT * FROM college ORDER BY collName ASC;") or die(mysqli_error($conn));
 												while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
 											?>
 										</select>
 									</tr><tr>
-										<select id="dept-list3" onchange="getD(this.value)"><option value='-1' selected >- SELECT DEPTARTMENT -</option></select>
+										<select id="dept-list3" onchange="getD(this.value); updateSession(9,this.value);"><option value='-1' selected >- SELECT DEPTARTMENT -</option></select>
 									</tr>
 								</td>
 							</table>
@@ -368,7 +379,7 @@ function getDept(type, did){
 						<td>*College:</td><td align=left colspan=2><span id="d2"><select name="dt-collSel" id="dt-collSel" style="width:95%;">
 							<option value='-1' selected >- SELECT COLLEGE -</option> 
 							<?php
-								$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
+								$result = mysqli_query($conn, "SELECT * FROM college ORDER BY collName ASC;") or die(mysqli_error($conn));
 								while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
 							?> </select></span>
 						</td>
@@ -389,6 +400,15 @@ function getDept(type, did){
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<?php include("footer.php"); ?>
+<?php include("footer.php"); 
+
+	if (isset($_SESSION['admColl_1'])){ echo "<script>getData(1,0,".$_SESSION['admColl_1'].");getData(2,".$_SESSION['admColl_1'].",-1);</script>"; }
+	if (isset($_SESSION['admDept_1'])){ echo "<script>getData(2,".$_SESSION['admColl_1'].",".$_SESSION['admDept_1'].");getData(3,".$_SESSION['admDept_1'].",-1);</script>"; }
+	if (isset($_SESSION['admStaff_1'])){ echo "<script>getData(3,".$_SESSION['currDept'].",".$_SESSION['admStaff_1'].");getS(".$_SESSION['admStaff_1'].");</script>"; }
+	if (isset($_SESSION['admColl_2'])){ echo "<script>getData(6,0,".$_SESSION['admColl_2'].");getC(".$_SESSION['admColl_2'].");</script>"; }
+	if (isset($_SESSION['admColl_3'])){ echo "<script>getData(7,0,".$_SESSION['admColl_3'].");getData(8,".$_SESSION['admColl_3'].",-1);</script>"; }
+	if (isset($_SESSION['admDept_3'])){ echo "<script>getData(8,".$_SESSION['admColl_3'].",".$_SESSION['admDept_3'].");getD(".$_SESSION['admDept_3'].");</script>"; }
+
+?>
 </body>
 </html>

@@ -2,16 +2,21 @@
 <html>
 <head>
 <meta charset="utf-8">
-<?php  include("connect.php"); ?>
+<?php  
+session_start();
+include("connect.php"); 
+?>
 <title>Faculty Tracker</title>
 <!--[if lte IE 9]><script src="js/html5shiv.js"></script> <![endif]-->
 <!--[if lte IE 8]><script src="js/html5shiv.js"></script> <![endif]-->
 <link href="styles.css" rel="stylesheet" type="text/css">
 </head>
 <script>
-function getData(type,str) {
-    if (str == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
-		if (type==0) document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
+function getData(type,input,sel) {
+    if (input == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+		document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>";
+		updateSession(2,-1);
+		updateSession(3,-1);		
 		return;
 	} else {
 		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
@@ -21,17 +26,27 @@ function getData(type,str) {
         }
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {// <- No idea. Just go with it.
-				if (type==0) document.getElementById("dept-list").innerHTML = this.responseText;
-				else document.getElementById("staff-list").innerHTML = this.responseText;
+				if (type==1) document.getElementById("coll-list").innerHTML = this.responseText;
+				else document.getElementById("dept-list").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("GET","getData.php?t="+type+"&in="+str,true);
+        xmlhttp.open("GET","getData.php?in="+input+"&t="+type+"&s="+sel,true);
         xmlhttp.send();
     }
 }
-function getGlance(str) {
-    if (str == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
-		document.getElementById("event-table-data").innerHTML = ""; 
+function updateSession(type,input) {
+	if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp = new XMLHttpRequest();
+	} else { // <- code for IE6, IE5
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.open("GET","upSession.php?t="+type+"&in="+input,true);
+	xmlhttp.send();
+}
+function getGlance(input) {
+    if (input == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+		document.getElementById("event-table-data").innerHTML = "";
+		updateSession(3,-1);	
 		return;
 	} else {
 		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
@@ -44,7 +59,7 @@ function getGlance(str) {
 				document.getElementById("event-table-data").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("GET","getGlance.php?in="+str,true);
+        xmlhttp.open("GET","getGlance.php?in="+input,true);
         xmlhttp.send();
     }
 }
@@ -57,15 +72,15 @@ function getGlance(str) {
   <table>
 		<td>
 			<tr>
-				<select id="coll-list" onchange="getData(0,this.value)">
+				<select id="coll-list" onchange="getData(2,this.value,-1); updateSession(1,this.value);">
 					<option value="-1" selected >- SELECT COLLEGE -</option>
 					<?php
-						$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
+						$result = mysqli_query($conn, "SELECT * FROM college ORDER BY collName ASC;") or die(mysqli_error($conn));
 						while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
 					?>
 				</select>
 			</tr><tr>
-				<select id="dept-list" onchange="getGlance(this.value)"><option value="-1" selected >- SELECT DEPTARTMENT -</option></select>
+				<select id="dept-list" onchange="getGlance(this.value); updateSession(2,this.value);"><option value="-1" selected >- SELECT DEPTARTMENT -</option></select>
 			</tr>
 		</td>
 	</table>
@@ -82,7 +97,13 @@ function getGlance(str) {
     </div> <!--End main content-->
 	&nbsp;
 
-	<?php include("footer.php");?>
+	<?php 
+	include("footer.php");
+	
+	//SESSION CHECK
+	if (isset($_SESSION['currColl'])){ echo "<script>getData(1,0,".$_SESSION['currColl'].");</script>"; }
+	if (isset($_SESSION['currDept'])){ echo "<script>getData(2,".$_SESSION['currColl'].",".$_SESSION['currDept'].");getGlance(".$_SESSION['currDept'].");</script>"; }
+	?>
 </div> <!--End wrappper class-->
 
 </body>

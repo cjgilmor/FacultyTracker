@@ -11,6 +11,7 @@
 <meta http-equiv="refresh" content="300" />
 <link href="calstyles.css" rel="stylesheet" type="text/css" />
 <?php
+/*
 if(isset($_POST["staff-list"]))
 {
 	$user = mysqli_real_escape_string($conn, $_POST["staff-list"]);
@@ -25,13 +26,15 @@ if(isset($_POST["staff-list"]))
 	//Sets Selected staff name
 	$name = mysqli_real_escape_string($conn, $row['fName'])." ".mysqli_real_escape_string($conn, $row['lName']);
 }
+*/
 ?>
 <title>Weekly Schedule <?php if(isset($name))echo "| " . $name; ?></title>
 <script>
-function getData(type,str) {
-    if (str == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
-		if (type==0) document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; 
+function getData(type,input,sel) {
+    if (input == "-1") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+		if (type==2) { document.getElementById("dept-list").innerHTML = "<option value='-1' selected >- SELECT DEPTARTMENT -</option>"; updateSession(2,-1); }
 		document.getElementById("staff-list").innerHTML = "<option value='-1' selected >- SELECT STAFF MEMBER -</option>";
+		updateSession(3,-1);
 		return;
 	} else {
 		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
@@ -41,13 +44,23 @@ function getData(type,str) {
         }
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {// <- No idea. Just go with it.
-				if (type==0) document.getElementById("dept-list").innerHTML = this.responseText;
+				if (type==1) document.getElementById("coll-list").innerHTML = this.responseText;
+				else if (type==2)document.getElementById("dept-list").innerHTML = this.responseText;
 				else document.getElementById("staff-list").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("GET","getData.php?t="+type+"&in="+str,true);
+        xmlhttp.open("GET","getData.php?t="+type+"&in="+input+"&s="+sel,true);
         xmlhttp.send();
     }
+}
+function updateSession(type,input) {
+	if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp = new XMLHttpRequest();
+	} else { // <- code for IE6, IE5
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.open("GET","upSession.php?t="+type+"&in="+input,true);
+	xmlhttp.send();
 }
 function getE(uid) {
 	getName(uid);
@@ -114,17 +127,17 @@ function getName(uid) {
   <table>
 		<td>
 			<tr>
-				<select id="coll-list" onchange="getData(0,this.value)">
-					<option value="-1" selected >- SELECT COLLEGE -</option>
+				<select id="coll-list" onchange="getData(2,this.value,-1); updateSession(1,this.value);">
+					<option value="-1"  selected>- SELECT COLLEGE -</option>
 					<?php
-						$result = mysqli_query($conn, "SELECT * FROM college;") or die(mysqli_error($conn));
+						$result = mysqli_query($conn, "SELECT * FROM college ORDER BY collName ASC;") or die(mysqli_error($conn));
 						while($row = mysqli_fetch_array($result)) { echo "<option value=" . $row['collID'] . ">" . $row['collName'] . " </option>"; }
 					?>
 				</select>
 			</tr><tr>
-				<select id="dept-list" onchange="getData(1,this.value)"><option value='-1' selected >- SELECT DEPTARTMENT -</option></select>
+				<select id="dept-list" onchange="getData(3,this.value,-1); updateSession(2,this.value);"><option value='-1' selected>- SELECT DEPTARTMENT -</option></select>
 			</tr><tr><!-- name="staff-list" is needed for POST functionality -->
-				<select name="staff-list" id="staff-list" onchange="getE(this.value)"><option value='-1' selected >- SELECT STAFF MEMBER -</option></select>
+				<select name="staff-list" id="staff-list" onchange="getE(this.value); updateSession(3,this.value)"><option value='-1' selected>- SELECT STAFF MEMBER -</option></select>
 			</tr>
 		</td>
 	</table>
@@ -230,7 +243,12 @@ function getName(uid) {
     </table>
    
 </div>
- 	<?php include("footer.php") ?>
+ 	<?php 
+	include("footer.php");
+	if (isset($_SESSION['currColl'])){ echo "<script>getData(1,0,".$_SESSION['currColl'].");getData(2,".$_SESSION['currColl'].",-1);</script>"; }
+	if (isset($_SESSION['currDept'])){ echo "<script>getData(2,".$_SESSION['currColl'].",".$_SESSION['currDept'].");getData(3,".$_SESSION['currDept'].",-1);</script>"; }
+	if (isset($_SESSION['currStaff'])){ echo "<script>getData(3,".$_SESSION['currDept'].",".$_SESSION['currStaff'].");getE(".$_SESSION['currStaff'].");</script>"; }
+	?>
     </div>
 </body>
 </html>
