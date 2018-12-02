@@ -7,7 +7,7 @@ if(session_id() == '' || !isset($_SESSION)) {
 //Variables for Username, Password, Hostname
 
 //Code for Our Server
-include('nfMv6SUnU9.php');
+include('connect.php');
 //Checks to see if the user is logged into the system
 if (!isset($_SESSION['basic_is_logged_in']) 
     || $_SESSION['basic_is_logged_in'] !== true) {

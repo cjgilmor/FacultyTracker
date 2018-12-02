@@ -32,6 +32,8 @@ while($row = mysqli_fetch_array($result)) {
 	if ($type==6) echo "<input type='text' name='office' id='office' style='width:95%;' maxlength='50' pattern='[^><]+' value = '".$row['office']."'/>";
 	if ($type==7) echo "<input type='text' name='un' id='un' style='width:95%;' maxlength='16' pattern='[^><]+' value = '".$row['un']."'/>";
 	if ($type==8) echo "<input type='text' name='pass' id='pass' size=32 pattern='[^><]+' value = '".$row['pw']."' style='width:50%;' disabled />";
+	if ($type==9) { echo $row['office']; }// <-- TEST! INSERT BY value, INSTEAD OF innerHTML
+	if ($type==10) { echo " : ".$row['fName']." ".$row['lName']; }
 }if ($type==2||$type==4) echo "</select>";
 mysqli_close($conn);
 ?>

@@ -1,8 +1,8 @@
 <?php
 	//Variables for Username, Password, Hostname
 	//Code for Our Server
-	$dbusername = 'ft_control';
-	$dbpassword = '97SUN51QA4';
+	$dbusername = 'ft_admin';
+	$dbpassword = 'GXPE8MEWK0';
 
 	//Variables for my local database on localhost
 	$hostname = 'localhost';

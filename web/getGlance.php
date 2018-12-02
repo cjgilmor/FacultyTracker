@@ -19,12 +19,14 @@ $result = mysqli_query($conn, $query);
 	echo "<table class='weekly' width=600 border=2;><tr><th> Faculty Name </th> <th> Current Location </th> <th> Until</th> </tr>";
 	while($row = mysqli_fetch_array($result)) {	
 			echo "<tr>";
-			if ($row['typeID']==0||$row['typeID']==2) $color="lightgreen"; else $color="white";
+			if ($row['typeID']==3||$row['typeID']==4) $color="lightgreen"; else $color="white";
 			//This puts the results in the table
 			echo "<td align='center' style='background-color:$color;'>".$row['fName']." ".$row['lName']."</td>";
 			echo "<td align='center' style='background-color:$color;'>".$row['eventName']." (".$row['eventPlace'].")</td>";
-			echo "<td align='center' style='background-color:$color;'>".date('g:i a', strtotime($row['endTime']))."</td>";
-			echo "</tr>";	
+			echo "<td align='center' style='background-color:$color;'>";
+			if ($row['typeID']==1||$row['typeID']==3||$row['typeID']==5||$row['typeID']==7) echo "All day";
+			else date('g:i a', strtotime($row['endTime']));
+			echo "</td></tr>";	
 	}echo "</table>";
 mysqli_close($conn);
 ?>

@@ -51,8 +51,12 @@ $uid = intval($_GET['id']); //input string
 			$url = $url . "?eventID=" . $eventID;
 			$url = "window.open('".$url."','','width=310,height=355,0,status=0,scrollbars=1,left=500,top=20')";
 			echo "<td";
-			if ($row['typeID']==0||$row['typeID']==2) echo " style='background-color:lightgreen;' ";
-			echo "><b><a href='javascript:void();' onClick=".$url.">" . $title . "</a></b><br/><small>". date("g:i a", strtotime($start)) . "-" . date("g:i a", strtotime($end)) . "</small></td>";
+			//OFFICE HOURS ARE GREEN
+			if ($row['typeID']==3||$row['typeID']==4) echo " style='background-color:lightgreen;' ";
+			echo "><b><a href='javascript:void();' onClick=".$url.">" . $title . "</a></b><br/><small>";
+			if ($row['typeID']==1||$row['typeID']==3||$row['typeID']==5||$row['typeID']==7) echo "All day";
+			else echo date("g:i a", strtotime($row['startTime'])) . "-" . date("g:i a", strtotime($row['endTime']));
+			echo"</small></td>";
 			echo "</tr>";
 			echo "</table>";
 		}

@@ -8,7 +8,7 @@
 </head>
 <?php
 session_start();
-include('nfMv6SUnU9.php');
+include('connect.php');
 //Checks to see if the user is logged into the system
 if (!isset($_SESSION['basic_is_logged_in']) 
     || $_SESSION['basic_is_logged_in'] !== true) {

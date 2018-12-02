@@ -343,7 +343,9 @@ function ds_onclick(d, m, y) {
 		while($row = mysqli_fetch_array($result))
 		{
 			echo "<tr>";
-			if ($row['typeID']==0||$row['typeID']==2) $color="lightgreen"; else $color="white";
+			//SETS COLOR BASED ON typeID FIELD
+				//OFFICE
+			if ($row['typeID']==3||$row['typeID']==4) $color="lightgreen"; else $color="white";
 			//This puts the results in the table
 			echo "<td style='background-color:$color;'><input type='checkbox' name='check[]' value='" . $row['eventID'] . "'></td>";
 			$aurl = "Edit.php";
@@ -352,7 +354,10 @@ function ds_onclick(d, m, y) {
 			$url = "descript.php";
 			$url = $url . "?eventID=" . $row['eventID'];
 			$url = "window.open('".$url."','','width=310,height=355,0,status=0,scrollbars=1,left=500,top=20')";
-			echo "<td style='background-color:$color;'><b><a href='javascript:void();' onClick=".$url.">" . $row['eventName'] . "</a></b><br/><small>". date("g:i a", strtotime($row['startTime'])) . "-" . date("g:i a", strtotime($row['endTime'])) . "</small></td>";			
+			echo "<td style='background-color:$color;'><b><a href='javascript:void();' onClick=".$url.">" . $row['eventName'] . "</a></b><br/><small>";
+			if ($row['typeID']==1||$row['typeID']==3||$row['typeID']==5||$row['typeID']==7) echo "All day";
+			else echo date("g:i a", strtotime($row['startTime'])) . "-" . date("g:i a", strtotime($row['endTime']));
+			echo "</small></td>";			
 			echo "<td style='background-color:$color;'><a href='javascript:void();' onClick=".$aurl.">Edit</a>";
 			echo "</tr>";
 		}
@@ -447,7 +452,7 @@ function ds_onclick(d, m, y) {
       </td>
     </table>
     <p><script type="text/javascript"> 
-/*
+/* <?php echo "?staffID='$_SESSION[staffID]'"?>
 Live Date Script- 
 Â© Dynamic Drive (www.dynamicdrive.com)
 For full source code, installation instructions, 100's more DHTML scripts, and Terms Of Use,

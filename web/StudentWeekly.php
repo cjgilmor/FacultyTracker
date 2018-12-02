@@ -1,4 +1,5 @@
 <?php 
+	session_start();
 	include('connect.php');
 	$name;
 	$uid;
@@ -49,7 +50,8 @@ function getData(type,str) {
     }
 }
 function getE(uid) {
-	if (uid=="") { getEvents("",uid); } 
+	getName(uid);
+	if (uid==-1) { getEvents(0,uid); } 
 	else {
 		getEvents(1,uid);
 		getEvents(2,uid);
@@ -59,7 +61,7 @@ function getE(uid) {
 	}
 }
 function getEvents(str, uid) {
-    if (str == "") { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+    if (uid == -1) { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
 		document.getElementById("s1").innerHTML = "";
 		document.getElementById("s2").innerHTML = ""; 
 		document.getElementById("s3").innerHTML = ""; 
@@ -78,6 +80,25 @@ function getEvents(str, uid) {
             }
         };
         xmlhttp.open("GET","getEvents.php?in="+str+"&id="+uid,true);
+        xmlhttp.send();
+    }
+}
+function getName(uid) {
+    if (uid == -1) { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+		document.getElementById("selectedName").innerHTML = "";
+		return;
+	} else {
+		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // <- code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {// <- No idea. Just go with it.
+				document.getElementById("selectedName").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET","getStaff.php?in="+uid+"&t=10",true);
         xmlhttp.send();
     }
 }
@@ -159,7 +180,7 @@ function getEvents(str, uid) {
 	}
 ?>
 <h3>
-    <p>Weekly Schedule <?php if(isset($name))echo "for: ". $name; ?></p></h3>
+    <p>Weekly Schedule<span id="selectedName"></span></p></h3>
   </div>
     <div align="center" class="week">
     <p> NOTICE! If an event is highlighted in green, the instructor is available.</br>If you do not see an event listed, assume they are not available. </p>

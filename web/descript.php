@@ -22,9 +22,11 @@ function results()
 		echo "<table>";
 		echo "<tr><td valign=top align=left><b>Title: </b></td><td>" . $row['eventName'] . "</td>";
 		echo "<tr><td align=left><b>Date: </b></td><td>" . $row['eventDate'] . "</td>";
-		echo "<tr><td align=left><b>Time: </b></td><td>" . $row['startTime'] . " - " . $row['endTime'] . "</td>";
+		echo "<tr><td align=left><b>Time: </b></td><td>";
+		if ($row['typeID']==1||$row['typeID']==3||$row['typeID']==5||$row['typeID']==7) echo "All day";
+		else echo $row['startTime'] . " - " . $row['endTime'];
 		//echo "<br/><br/>";
-		echo "<tr><td align=left><b>Location: </b></td><td>" . $row['eventPlace'] . "</td>";
+		echo "</td><tr><td align=left><b>Location: </b></td><td>" . $row['eventPlace'] . "</td>";
 		//echo "<br><br>";
 		echo "<tr><td valign=top align=left><b>Description: </b></td><td>" . $row['eventDesc'] . "</td>";
 		echo "</table>";

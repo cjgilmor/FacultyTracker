@@ -18,60 +18,36 @@
 	</head>
 	
 	<?php
+	
 		include('connect.php');
-		function checkRepeat($uID, $eID, $date, $Stime, $Etime) {// FOR NEW EVENT
+		function checkRepeat($uID, $date, $Stime, $Etime) {// FOR NEW EVENT
 			include('connect.php'); // <-- CONNECT PHP FILE REQUIRED INSIDE FUNCTION
 			mysqli_real_escape_string($conn, $uID);
-			mysqli_real_escape_string($conn, $eID);
 			mysqli_real_escape_string($conn, $date);
 			mysqli_real_escape_string($conn, $Stime);
 			mysqli_real_escape_string($conn, $Etime);
-			/* OLD QUERY - CLIENT WANTED CODE THAT COULD ADJUST CONFLICTING EVENTS, NOT DELETE THEM. REFERENCE MATERIAL.
-			"DELETE FROM events
+			// DELETES ALL SAME STAFF EVENTS THAT CONFLICTS WITH THE CURRENT EVENT
+			$testqry = "DELETE FROM events
 						WHERE staffID = '$uID' AND eventDate = '$date' AND startTime <= '$Stime' AND endTime > '$Stime'
 						OR staffID = '$uID' AND eventDate = '$date' AND startTime < '$Etime' AND endTime >= '$Etime'
 						OR staffID = '$uID' AND eventDate = '$date' AND startTime >= '$Stime' AND endTime <= '$Etime'
-						OR staffID = '$uID' AND eventDate = '$date' AND startTime < '$Stime' AND endTime > '$Etime'";
-			*/
-			//REMOVES EVENTS THAT ARE COMPLETELY OVERSHADOWED BY NEW EVENT
-			$query = "DELETE FROM events WHERE eventID != '$eID' AND staffID = '$uID' AND eventDate = '$date' AND startTime >= '$Stime' AND endTime <= '$Etime';";
-			mysqli_query($conn, $query) or die(mysqli_error($conn));
-			
-			//SPLITS EVENTS THAT WOULD OVERSHADOW NEW EVENT
-			$query = "SELECT * FROM events WHERE eventID != '$eID' AND staffID = '$uID' AND eventDate = '$date' AND startTime < '$Stime' AND endTime > '$Etime';";
-			$result = mysqli_query($conn, $query) or die(mysqli_error($conn)); $nul = "NULL"; $q2="";
-			while($row = mysqli_fetch_array($result)) {
-				$typeTest = $row['typeID'];
-				if ($typeTest==1||$typeTest==3||$typeTest==5||$typeTest==7) $typeTest++;
-				$q2= "UPDATE events SET eventBlockID = NULL, typeID = '$typeTest', endTime = '$Stime' WHERE eventID = '".$row['eventID']."';";
-				mysqli_query($conn, $q2) or die(mysqli_error($conn));
-				
-				$q2 = "INSERT INTO events (staffID, typeID, eventName, eventPlace, eventDate, startTime, endTime) VALUES 
-				('".$row['staffID']."','$typeTest','".$row['eventName']."','".$row['eventPlace']."','".$row['eventDate']."','$Etime','".$row['endTime']."');";
-				mysqli_query($conn, $q2) or die(mysqli_error($conn));
-			}
-
-			//ADJUSTS EVENTS THAT CONFLICT WITH START TIME OF NEW EVENT
-			$query = "SELECT * FROM events WHERE eventID != '$eID' AND staffID = '$uID' AND eventDate = '$date' AND startTime <= '$Stime' AND endTime >= '$Stime';";
-			$result = mysqli_query($conn, $query) or die(mysqli_error($conn)); $q2="";
-			while($row = mysqli_fetch_array($result)) {
-				$typeTest = $row['typeID'];
-				if ($typeTest==1||$typeTest==3||$typeTest==5||$typeTest==7) $typeTest++;
-				$q2= "UPDATE events SET eventBlockID = NULL, typeID = $typeTest, endTime = '$Stime' WHERE eventID = '".$row['eventID']."';";
-				mysqli_query($conn, $q2) or die(mysqli_error($conn));
-			}
-			
-			//ADJUSTS EVENTS THAT CONFLICT WITH END TIME OF NEW EVENT
-			$query = "SELECT * FROM events WHERE eventID != '$eID' AND staffID = '$uID' AND eventDate = '$date' AND startTime <= '$Etime' AND endTime >= '$Etime';";
-			$result = mysqli_query($conn, $query);
-			while($row = mysqli_fetch_array($result)) {
-				$typeTest = $row['typeID'];
-				if ($typeTest==1||$typeTest==3||$typeTest==5||$typeTest==7) $typeTest++;
-				$q2= "UPDATE events SET eventBlockID = NULL, typeID = $typeTest, startTime = '$Etime' WHERE eventID = '".$row['eventID']."';";
-				mysqli_query($conn, $q2) or die(mysqli_error($conn));
-			}
+						OR staffID = '$uID' AND eventDate = '$date' AND startTime <= '$Stime' AND endTime >= '$Etime'";
+			mysqli_query($conn, $testqry);
 		}
-		//USER INPUT SANITATION
+		function checkRepeat2($eID, $uID, $date, $Stime, $Etime) {// FOR EDIT EVENT
+		include('connect.php'); // <-- CONNECT PHP FILE REQUIRED INSIDE FUNCTION
+			mysqli_real_escape_string($conn, $uID);
+			mysqli_real_escape_string($conn, $date);
+			mysqli_real_escape_string($conn, $Stime);
+			mysqli_real_escape_string($conn, $Etime);
+			//DELETES ALL SAME STAFF EVENTS THAT CONFLICTS WITH THE CURRENT EVENT, EXCLUDING THE EVENT BEING EDITED
+			$testqry = "DELETE FROM events
+						WHERE eventID != '$eID' AND staffID = '$uID' AND eventDate = '$date' AND startTime <= '$Stime' AND endTime > '$Stime'
+						OR eventID != '$eID' AND staffID = '$uID' AND eventDate = '$date' AND startTime < '$Etime' AND endTime >= '$Etime'
+						OR eventID != '$eID' AND staffID = '$uID' AND eventDate = '$date' AND startTime >= '$Stime' AND endTime <= '$Etime'
+						OR eventID != '$eID' AND staffID = '$uID' AND eventDate = '$date' AND startTime <= '$Stime' AND endTime >= '$Etime'";
+			mysqli_query($conn, $testqry);
+		}//USER INPUT SANITATION
 		function test_input($data) {//Help to prevent Cross-Site Scripting attacks
 			$data = trim($data);
 			$data = stripslashes($data);
@@ -150,8 +126,8 @@
 		//To prevent script hacking
 		mysqli_real_escape_string($conn, $eDesc);
 		// This inserts the data into the database
-		if($edit) checkRepeat($uID, $eventID, $eDateStart, $eTimeStart, $eTimeEnd);
-		else checkRepeat($uID, -1, $eDateStart, $eTimeStart, $eTimeEnd);
+		if($edit) checkRepeat2($eventID, $uID, $eDateStart, $eTimeStart, $eTimeEnd);
+		else checkRepeat($uID, $eDateStart, $eTimeStart, $eTimeEnd);
 		if ($eRepeat==1 || !$edit){ // INITAL UPLOAD WILL ONLY PROPERLY WORK IN ALL SCENARIOS IF IT IS A SINGLE EDIT OR A NEW EVENT
 									//    This block MAY become redundant in later builds
 			if($edit) {
@@ -192,7 +168,7 @@
 				 strpos($eDays, 'W')!== false && date('w', strtotime($eDateStart)) == 3 || //     would ALWAYS fail (FALSE) if M in $eDays is the very first letter,
 				 strpos($eDays, 'R')!== false && date('w', strtotime($eDateStart)) == 4 || //     which it always will be according to the site setup.
 				 strpos($eDays, 'F')!== false && date('w', strtotime($eDateStart)) == 5 ){ //     strpos returns the POSITION of the item, not a boolean.
-					checkRepeat($uID, -1, $eDateStart, $eTimeStart, $eTimeEnd);
+					checkRepeat($uID, $eDateStart, $eTimeStart, $eTimeEnd);
 					$query = "INSERT INTO events(eventBlockID, staffID, typeID, eventName, eventPlace, eventDesc, eventDate, startTime, endTime) 
 					VALUES ('$eventBlockID', '$uID', '$eType', '$eName', '$ePlace', '$eDesc', '$eDateStart', '$eTimeStart', '$eTimeEnd' )";
 					// Inserts the entry into the database

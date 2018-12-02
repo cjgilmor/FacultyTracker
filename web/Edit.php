@@ -8,6 +8,10 @@ if (!isset($_SESSION['basic_is_logged_in'])
     include("FLogin.php");
     ob_flush();
 	exit;	
+	
+} else {
+	date_default_timezone_set("America/New_York");
+	$uid = $_SESSION['staffID'];
 }
 //The connection to the database
 include('connect.php');
@@ -20,14 +24,18 @@ if(!empty($_GET['eventID'])) {
     if($result != false){
 		
 		//Declaring IF variables early;
-		$cAva ="";$cOvr ="";
+		$cAllDay ="";
+		$sT1="";$sT2="";$sT3="";$sT4="";
 		$eBlock = NULL; $r1 = "checked"; $r2 = "";
 		$cMon="";$cTue="";$cWed="";$cThu="";$cFri="";
 
         $data = mysqli_fetch_array($result);
         $eType = $data['typeID'];
-		if ($eType==0||$eType==2)$cAva ="checked";
-		if ($eType==0||$eType==1)$cOvr ="checked";
+		if ($eType==1||$eType==3||$eType==5||$eType==7)$cAllDay ="checked";
+		if ($eType==1||$eType==2)$sT1 ="selected";
+		if ($eType==3||$eType==4)$sT2 ="selected";
+		if ($eType==5||$eType==6)$sT3 ="selected";
+		if ($eType==7||$eType==8)$sT4 ="selected";
 		$eName = $data['eventName'];
         $ePlace = $data['eventPlace'];
         $eDesc = $data['eventDesc'];
@@ -56,15 +64,15 @@ if(!empty($_GET['eventID'])) {
 	<script>
 	//CONFIRMS NO BAD ENTRY DATA, THEN SUBMITS
 	function validateForm(){
-//		var rbt = document.forms["mainForm"]["rbTimes"].value;
 		var	d1 = document.forms["mainForm"]["dateStart"].value;
 		var	d2 = document.forms["mainForm"]["dateEnd"].value;
 		var	t1 = document.forms["mainForm"]["timeStart"].value;
-		var	t2 = document.forms["mainForm"]["timeEnd"].value;	
-//		if ( rbt==2 && d1 > d2 ) 
-		if ( d1 > d2 ) 
+		var	t2 = document.forms["mainForm"]["timeEnd"].value;
+		var	type = document.forms["mainForm"]["selType"].value;
+		if (type==-1)  { alert("Select an event type."); return false; }
+		else if (document.forms["mainForm"]["rbTimes"].value!=1 && d1 > d2 ) 
 			{ alert("End date cannot come BEFORE start date."); return false; }
-		else if ( t1 > t2 ) 
+		else if (!document.forms["mainForm"]["cbAllDay"].checked && t1 > t2 ) 
 			{ alert("End time cannot come BEFORE start time."); return false; }
 	}
 	function showMultiple(str) {
@@ -85,6 +93,31 @@ if(!empty($_GET['eventID'])) {
 		document.getElementById("spanU2").innerHTML="<b> ...this event only.</b>";
 		document.getElementById("spanU3").innerHTML="<b> ...all events in this block.</b>";
 	}
+	function CheckAllDay() {
+			document.forms["mainForm"]["timeStart"].disabled = document.forms["mainForm"]["cbAllDay"].checked;
+			document.forms["mainForm"]["timeEnd"].disabled = document.forms["mainForm"]["cbAllDay"].checked;
+	}
+	function checkType(str) {
+    if (str != 2) { //REVERTS TO DEFAULT WHEN NO ENTRY IS SELECTED
+		return;
+	} else {
+		var uid = -1;
+		<?php echo "uid = $uid;"?>
+		if (window.XMLHttpRequest) { // <- code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // <- code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {// <- No idea. Just go with it.
+				document.getElementById("txtName").value = "Office Hours";
+				document.getElementById("txtPlace").value = this.responseText;
+            }
+        };
+        xmlhttp.open("GET","getStaff.php?in="+uid+"&t=9",true);
+        xmlhttp.send();
+    }
+}
 	</script>
 	<title>Edit Event</title>
 	<body style="background-color: rgb(40,14,157); font-family: 'Calibri'; color:white">
@@ -96,12 +129,18 @@ if(!empty($_GET['eventID'])) {
 					<td>Place: <input type="text" id="txtPlace" name="txtPlace" maxlength="50" pattern="[^><]*" value="<?php echo $ePlace ?>"/></td>
 				</tr><tr>
 					<td colspan="2">
-						This event is about...<br/>
-						<textarea id="txtDesc" name="txtDesc" style="width:450px; height:125px; font-family:'Calibri';" maxlength="200"><?php echo $eDesc ?></textarea>
-					</td>
+							This event is... <select id="selType" name="selType" onchange="checkType(this.value)">
+												<option value='-1'>- SELECT TYPE -</option>
+												<option value='1'<?php echo $sT1 ?>>Classtime</option>
+												<option value='2'<?php echo $sT2 ?>>Office Hours</option>
+												<option value='3'<?php echo $sT3 ?>>Research</option>
+												<option value='4'<?php echo $sT4 ?>>Other</option>
+											</select>
+						</td>
 				</tr><tr>
 					<td colspan="2">
-						Are you Available? <input type="checkbox" name="cbAva" value="1" <?php echo $cAva ?>>
+						This event is about...<br/>
+						<textarea id="txtDesc" name="txtDesc" style="width:450px; height:125px; font-family:'Calibri';" maxlength="200"><?php echo $eDesc ?></textarea>
 					</td>
 				</tr>
 		</table> <table width="450">
@@ -117,7 +156,8 @@ if(!empty($_GET['eventID'])) {
 						<div id="edBox" style="display:none">End Date: <input type="date" id="dateEnd" name="dateEnd" value="<?php echo $Date2 ?>"/></div>
 					</td><td>
 						Start Time:<input type="time" id="timeStart" name="timeStart" value="<?php echo $eStart; ?>" /></br>
-						End Time:<input type="time" id="timeEnd" name="timeEnd" value="<?php echo $eEnd; ?>" />
+						End Time:<input type="time" id="timeEnd" name="timeEnd" value="<?php echo $eEnd; ?>" /></br>
+						All day? <input type="checkbox" id="cbAllDay" name="cbAllDay"  value="1" onchange="CheckAllDay()" <?php echo $cAllDay; ?>>
 					</td>
 				</tr><tr>
 					<td colspan="2" height="25">
@@ -130,9 +170,6 @@ if(!empty($_GET['eventID'])) {
 						</div>
 					</td>
 				</tr><tr>
-					<td colspan="2">
-						Override existing events? <input type="checkbox" name="cbOvr" value="1" <?php echo $cOvr; ?>>
-					</td>
 				</tr>
 			</table> <table width="450">
 				<tr>
@@ -147,7 +184,9 @@ if(!empty($_GET['eventID'])) {
 					</td>
 				</tr><tr>
 			</table>
-			<?php if($eBlock != NULL) echo "<script>showMultiple(2);blockUpdate();</script>"; ?>
+			<?php if($eBlock != NULL) echo "<script>showMultiple(2);blockUpdate();</script>"; 
+				  echo"<script>CheckAllDay();</script>"
+			?>
 		</form>
 	</body>
 </html>
